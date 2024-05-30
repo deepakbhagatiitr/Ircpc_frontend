@@ -1,0 +1,16 @@
+
+    body{
+        background-image: url('https://qph.cf2.quoracdn.net/main-qimg-a74f6117fa1590e8a32d40f79cfcafc6-lq');
+        background-position: left;
+        background-size: cover;
+        background-repeat: no-repeat;
+        
+    }
+    .myclassName{
+        background-color: rgba(138, 142, 146, 0.33);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        margin-top: 8%;
+        
+    } 
+  

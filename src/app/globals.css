@@ -1,0 +1,129 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* 
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+} */
+.query-container {
+  width: 80%;
+  /* margin: auto; */
+  padding: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.query-list {
+  margin-top: 20px;
+  overflow-y: scroll;
+  height: 55%;
+}
+
+.query-item {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.query-name {
+  font-size: 20px;
+  font-weight: bold;
+  display: inline-block;
+}
+.flebox{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0px;
+}
+.query-email, .query-date {
+  font-size: 14px;
+  /* margin-left: 10px; */
+  display: inline-block;
+}
+.query-text {
+  margin-top: 10px;
+}
+
+.query-comment {
+  margin-top: 10px;
+  font-style: italic;
+}
+
+.query-button {
+  margin-top: 10px;
+  padding: 5px 10px;
+  border: none;
+  background-color: #007BFF;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.query-button:hover {
+  background-color: #0056b3;
+}
+.query-input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.query-button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #007BFF;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.query-button:hover {
+  background-color: #0056b3;
+}
+
+/* Stats.css */
+.stats {
+  margin-left: 15%;
+  margin-top: 5%;
+  height: 50%;
+  width: 70%;
+  /* display: flex;
+  flex-wrap: wrap; */
+}
+/* .ststbox{
+  border: solid rgb(155, 155, 165) 5px;
+  width: 600px;
+  height: 400px;
+} */
+.stats div {
+  margin-bottom: 20px;
+}
+
+.stats h2 {
+  text-align: center;
+  margin-bottom: 10px;
+}
