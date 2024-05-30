@@ -147,7 +147,7 @@ export default function ViewPatentDetail() {
               <button
                 className="px-4 py-2 mt-5 text-2xl font-bold text-white bg-black rounded hover:bg-green-600 "
               >
-                Committee's Formed
+                Committee is Formed
               </button>
             ) : (
               <button

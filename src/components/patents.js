@@ -308,7 +308,7 @@ const AddPatentForm = () => {
             />
           </div>
           <p className="mt-4 text-base text-gray-500">
-            Submitting this application won't change your profile.
+            Submitting this application will not update your profile.
           </p>
           <p className="mt-4 text-base text-gray-400">
             Application powered by unknown |{" "}
