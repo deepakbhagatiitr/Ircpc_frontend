@@ -237,7 +237,7 @@ const AddPatentForm = () => {
         <div className="flex flex-col w-5/12 p-6 bg-white rounded-lg shadow-lg md:w-1/2">
           <h2 className="mb-4 text-2xl font-bold text-gray-800">Patent Upload</h2>
           <p className="mb-4 text-base text-gray-600">
-            Be sure to include an updated patent <span className="text-red-500">&apos;*</span>
+            Be sure to include an updated patent <span className="text-red-500">*</span>
           </p>
 
 
