@@ -83,7 +83,7 @@ const AddPatentForm = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("https://ircpc-backend.onrender.com/api/profiles/addpatents", formData);
+      const response = await axios.post("http://localhost:5000/api/profiles/addpatents", formData);
       alert('Patent added successfully'); // Move inside the try block
       router.push('/');
       console.log("Patent added successfully:", response.data);
@@ -114,7 +114,7 @@ const AddPatentForm = () => {
         ...prevResumes,
         { name: file.name, lastUsed: new Date().toISOString().slice(0, 19).replace('T', ' '), url: URL.createObjectURL(file) },
       ]);
-    } catch (error){
+    } catch (error) {
       console.error("Error adding patent:", error);
     }
   };
@@ -236,9 +236,10 @@ const AddPatentForm = () => {
         </div>
         <div className="flex flex-col w-5/12 p-6 bg-white rounded-lg shadow-lg md:w-1/2">
           <h2 className="mb-4 text-2xl font-bold text-gray-800">Patent Upload</h2>
-          <p className="mb-4 text-base text-gray-600">
-            Be sure to include an updated patent <span className="text-red-500">*</span>
+          <p className="text-base text-gray-600">
+            Be sure to include an updated patent <span className="text-red-500">&#42;</span>
           </p>
+
           <div className="w-full space-y-4 overflow-hidden">
             {resumes.slice(0, showMore ? resumes.length : maxVisibleResumes).map((resume, index) => (
               <div key={index} className="flex items-center p-3 mb-2 border rounded-lg bg-gray-50">
