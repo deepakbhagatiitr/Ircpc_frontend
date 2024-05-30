@@ -1,34 +1,27 @@
-"use client";
+"use client"
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 export default function Query() {
-  const [userdata, setUserdata] = useState(null);
+  // const [name, setName] = useState('');
+  // const [email, setEmail] = useState('');
   const [query, setQuery] = useState('');
   const [comment, setComment] = useState('');
   const [queries, setQueries] = useState([]);
 
+  const userdata = JSON.parse(localStorage.getItem('userdata'))
+  const name =userdata.person.fullName
+  const email=userdata.contactInformation.instituteWebmailAddress
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const storedUserdata = localStorage.getItem('userdata');
-      if (storedUserdata) {
-        setUserdata(JSON.parse(storedUserdata));
-      }
-    }
+    handleGetQuery();
+    console.log(userdata)
   }, []);
 
-  useEffect(() => {
-    if (userdata) {
-      handleGetQuery();
-    }
-  }, [userdata]);
-
   const handleSubmit = async () => {
-    if (!userdata) return;
-
-    const { fullName: name } = userdata.person;
-    const { instituteWebmailAddress: email } = userdata.contactInformation;
-
+    // setName(userdata?.person.fullName)
+    // setEmail(userdata?.contactInformation.instituteWebmailAddress)
+    // const name =userdata?.person.fullName
+    // const email=userdata?.contactInformation.instituteWebmailAddress
     try {
       const response = await axios.post('http://localhost:5000/api/query/createquery', {
         name,
@@ -44,10 +37,6 @@ export default function Query() {
   };
 
   const handleGetQuery = async () => {
-    if (!userdata) return;
-
-    const { instituteWebmailAddress: email } = userdata.contactInformation;
-
     try {
       const response = await axios.post('http://localhost:5000/api/query/getallquery', {
         email
@@ -70,31 +59,24 @@ export default function Query() {
       console.error('Error updating query:', error);
     }
   };
-
-  if (!userdata) {
-    return <div>Loading...</div>;
-  }
-
-  const { fullName: name, instituteWebmailAddress: email } = userdata.contactInformation;
-
-  return (
-    <div className="query-container h-[75%] mx-auto">
-      <div>
-        {email === 'admin@ipr.iitr.ac.in' && (
-          <>
+  if (userdata?.contactInformation.instituteWebmailAddress == 'admin@ipr.iitr.ac.in') {
+    return (
+      <>
+        <div className="query-container h-[75%] mx-auto">
+          <div>
             <input
               type="text"
               className="query-input"
               placeholder="Name"
               value={name}
-              readOnly
+              onChange={(e) => setName(e.target.value)}
             />
             <input
               type="email"
               className="query-input"
               placeholder="Email"
               value={email}
-              readOnly
+              onChange={(e) => setEmail(e.target.value)}
             />
             <input
               type="text"
@@ -106,34 +88,31 @@ export default function Query() {
             <button className="query-button" onClick={handleSubmit}>
               Create Query
             </button>
-          </>
-        )}
-        <div className="query-list">
-          {queries.map((query) => (
-            <div key={query._id} className="query-item">
-              <div className="flebox">
-                <h3 className="query-name">{query.name}</h3>
-                <p className="query-date">
-                  {new Date(query.date).toLocaleString("en-US", {
-                    timeZone: "UTC",
-                    hour12: true,
-                    hour: "numeric",
-                    minute: "numeric",
-                  })}
-                </p>
-              </div>
-              <p className="query-email">{query.email}</p>
-              <br />
-              <div>
-                <b>Query:</b>
-                <em className="query-text">{query.query}</em>
-              </div>
-              <div>
-                <b>{email === 'admin@ipr.iitr.ac.in' ? 'Comment:' : 'Admin Comment:'}</b>
-                <em className="comm-text">{query.comment || 'No comments till now'}</em>
-              </div>
-              {email === 'admin@ipr.iitr.ac.in' && (
-                <>
+            {/* ...existing code... */}
+            <div className="query-list ">
+              {queries.map((query) => (
+                <div key={query._id} className="query-item">
+                  <div className="flebox">
+                    <h3 className="query-name">{query.name}</h3>
+                    <p className="query-date">
+                      {new Date(query.date).toLocaleString("en-US", {
+                        timeZone: "UTC",
+                        hour12: true,
+                        hour: "numeric",
+                        minute: "numeric",
+                      })}
+                    </p>
+                  </div>
+                  <p className="query-email">{query.email}</p>
+                  <br />
+                  <div>
+                    <b>Query:</b>
+                    <em className="query-text">{query.query}</em>
+                  </div>
+                  <div>
+                    <b>Comment:</b>
+                    <em className="comm-text">{query.comment}</em>
+                  </div>
                   <input
                     type="text"
                     placeholder="Add comment"
@@ -145,12 +124,76 @@ export default function Query() {
                   >
                     Add Comment
                   </button>
-                </>
-              )}
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
+        </div>
+      </>
+    );
+  }
+  return (
+    <>
+      <div className="query-container h-[75%] mx-auto">
+        <div>
+          <input
+            type="text"
+            className="query-input"
+            placeholder="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <input
+            type="email"
+            className="query-input"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            type="text"
+            className="query-input"
+            placeholder="Query"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+          <button className="query-button" onClick={handleSubmit}>
+            Create Query
+          </button>
+          {/* ...existing code... */}
+          <div className="query-list ">
+            {queries.map((query) => (
+              <div key={query._id} className="query-item">
+                <div className="flebox">
+                  <h3 className="query-name">{query.name}</h3>
+                  <p className="query-date">
+                    {new Date(query.date).toLocaleString("en-US", {
+                      timeZone: "UTC",
+                      hour12: true,
+                      hour: "numeric",
+                      minute: "numeric",
+                    })}
+                  </p>
+                </div>
+                <p className="query-email">{query.email}</p>
+                <br />
+                <div>
+                  <b>Query:</b>
+                  <em className="query-text">{query.query}</em>
+                </div>
+                <div>
+                  <b>Admin Comment: </b>
+                  {query.comment ? (
+                    <em className="comm-text">{query.comment}</em>
+                  ) : (
+                    <span>No comments till now</span>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
-  );
+    </>
+  )
 }

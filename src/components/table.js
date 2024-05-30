@@ -34,13 +34,10 @@ const Addrow = (index, name, title, background, status, submittedon, view_detail
   tbody.appendChild(newRow);
 }
 export default function Table() {
-  const userdata = JSON.parse(
-
-    localStorage.getItem('userdata'))
+  const userdata = JSON.parse(localStorage.getItem('userdata'))
   const [patents, setPatents] = useState([]);
   useEffect(() => {
     const fetchPatents = async () => {
-      // console.log(userdata.contactInformation.instituteWebmailAddress);
       try {
         const response = await axios.get(
           `http://localhost:5000/api/profiles/patents/${userdata.contactInformation.instituteWebmailAddress}`
@@ -86,9 +83,7 @@ export default function Table() {
                   <th className="px-6 py-3 text-sm leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300">
                     Details
                   </th>
-                  <th className="px-6 py-3 border-b-2 border-gray-300">
-
-                  </th>
+                  <th className="px-6 py-3 border-b-2 border-gray-300"></th>
                 </tr>
               </thead>
               <tbody className="bg-white">

@@ -3,20 +3,16 @@ import React, { use, useState,useEffect } from "react";
 import { useRouter } from 'next/navigation';
 import Avatar from "@mui/material/Avatar";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
-import Image from "next/image";
 
 export default function Mainpage(){
   const router = useRouter()
   const Logout=()=>{
-    if (typeof window !== 'undefined') {
-      // Code that uses localStorage
-      localStorage.clear()
-    }
+    
+    localStorage.clear()
     router.push('/signin')
   }
     return (
       <>
-      {/* <Image src="./img/logo.png" className="w-[24vw]"></Image> */}
         <div className="w-[100vw] ">
           <div className="h-[8vh] bg-[#d7f1ff] flex items-center justify-between">
             <div className="px-[2vw] ">

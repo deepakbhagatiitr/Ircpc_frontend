@@ -22,10 +22,8 @@ export default function Login() {
         });
         if (response.data.success) {
           console.log(response.data);
-          if (typeof window !== 'undefined') {
-            // Code that uses localStorage
-            localStorage.setItem('userdata',JSON.stringify(response.data));
-          }
+          
+          localStorage.setItem('userdata',JSON.stringify(response.data));
 
            window.location.href = "/"; 
            

@@ -30,10 +30,8 @@ export default function Homepage() {
           authcode,
         });
         console.log(response.data)
-        if (typeof window !== 'undefined') {
-          // Code that uses localStorage
-          localStorage.setItem('userdata', JSON.stringify(response.data));
-        }
+        
+        localStorage.setItem('userdata', JSON.stringify(response.data));
         var userKaData = await response.data
         setData(userKaData)
         const profile_data_string =
