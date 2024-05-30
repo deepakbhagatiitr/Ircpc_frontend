@@ -9,7 +9,8 @@ export default function Sidebar() {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const storedUserdata = localStorage.getItem('userdata');
+      const storedUserdata =
+       localStorage.getItem('userdata');
       if (storedUserdata) {
         setUserdata(JSON.parse(storedUserdata));
       }

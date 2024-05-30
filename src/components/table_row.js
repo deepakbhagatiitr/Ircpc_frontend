@@ -7,7 +7,9 @@ export default function Row({ serialNumber, name, title, background, status, sub
   const [isActionOpen, setIsActionOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [pdfUrl, setPdfUrl] = useState(null);
-  const userdata = JSON.parse(localStorage.getItem('userdata'));
+  const userdata = JSON.parse(
+    
+    localStorage.getItem('userdata'));
 
   const handleViewDetails = async () => {
     setIsModalOpen(true);

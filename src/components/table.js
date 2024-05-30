@@ -34,7 +34,9 @@ const Addrow = (index, name, title, background, status, submittedon, view_detail
   tbody.appendChild(newRow);
 }
 export default function Table() {
-  const userdata = JSON.parse(localStorage.getItem('userdata'))
+  const userdata = JSON.parse(
+    
+    localStorage.getItem('userdata'))
   const [patents, setPatents] = useState([]);
   useEffect(() => {
     const fetchPatents = async () => {

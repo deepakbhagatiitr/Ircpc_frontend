@@ -9,7 +9,10 @@ export default function Query() {
   const [comment, setComment] = useState('');
   const [queries, setQueries] = useState([]);
 
-  const userdata = JSON.parse(localStorage.getItem('userdata'))
+  const userdata = JSON.parse(
+    
+    localStorage.getItem('userdata')
+  )
   const name =userdata.person.fullName
   const email=userdata.contactInformation.instituteWebmailAddress
   useEffect(() => {
