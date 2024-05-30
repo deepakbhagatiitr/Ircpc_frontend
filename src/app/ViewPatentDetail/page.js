@@ -68,8 +68,9 @@ export default function ViewPatentDetail() {
             <div className="mb-2 text-2xl font-semibold">
               Applicant Name :
               <span className="text-xl font-normal text-">
-                {' '}
+                &apos;
                 {patent.inventor?.name}
+               
               </span>
 
             </div>
