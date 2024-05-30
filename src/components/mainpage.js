@@ -7,7 +7,6 @@ import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 export default function Mainpage(){
   const router = useRouter()
   const Logout=()=>{
-    
     localStorage.clear()
     router.push('/signin')
   }

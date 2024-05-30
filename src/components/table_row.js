@@ -11,9 +11,12 @@ export default function Row({ serialNumber, name, title, background, status, sub
   const [userdata, setUserdata] = useState(null);
 
   useEffect(() => {
-    const storedUserdata = localStorage.getItem('userdata');
-    if (storedUserdata) {
-      setUserdata(JSON.parse(storedUserdata));
+    // Check if running in the browser environment before accessing localStorage
+    if (typeof window !== 'undefined') {
+      const storedUserdata = localStorage.getItem('userdata');
+      if (storedUserdata) {
+        setUserdata(JSON.parse(storedUserdata));
+      }
     }
   }, []);
 

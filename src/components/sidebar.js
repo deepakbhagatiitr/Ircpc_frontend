@@ -1,14 +1,34 @@
-"use client";
-import React, { useState,useEffect } from "react";
-import axios from "axios"
+"use client"
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import Avatar from "@mui/material/Avatar";
-import { useRouter } from 'next/navigation'
-export default function Sidebar() {
-    const router = useRouter()
-      const userdata = JSON.parse(localStorage.getItem('userdata'))
+import { useRouter } from 'next/navigation';
 
-      // const userdata = JSON.parse(localStorage.userdata)
-    // userdata.existing_user.email
+export default function Sidebar() {
+    const router = useRouter();
+    const [userdata, setUserData] = useState(null);
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const storedUserData = localStorage.getItem('userdata');
+                if (storedUserData) {
+                    const parsedUserData = JSON.parse(storedUserData);
+                    setUserData(parsedUserData);
+                }
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+            }
+        };
+
+        fetchUserData();
+    }, []);
+
+    if (!userdata) {
+        // Handle case where user data is not available
+        return null;
+    }
+
     return (
         <>
         <aside className="flex flex-col w-64 h-full px-4 py-8 overflow-y-auto bg-white border-r rtl:border-r-0 rtl:border-l dark:bg-gray-900 dark:border-gray-700">
