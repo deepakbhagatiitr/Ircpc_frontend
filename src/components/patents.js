@@ -1,10 +1,11 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 
 const AddPatentForm = () => {
   const router = useRouter();
+  const [helper, setHelper] = useState(null);
   const [formData, setFormData] = useState({
     title: "",
     fieldOfInvention: "",
@@ -15,8 +16,22 @@ const AddPatentForm = () => {
     },
     committeeMembers: [],
     pdf: null,
+    email: "",
     status: "pending approval"
   });
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const userdata = JSON.parse(localStorage.getItem('userdata'));
+      if (userdata) {
+        setHelper(userdata);
+        setFormData(prevFormData => ({
+          ...prevFormData,
+          email: userdata.contactInformation.instituteWebmailAddress
+        }));
+      }
+    }
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -63,6 +78,7 @@ const AddPatentForm = () => {
       committeeMembers: prevData.committeeMembers.filter((_, i) => i !== index),
     }));
   };
+
   const handleCheckboxChange = (e, url) => {
     const { checked } = e.target;
     if (checked) {
@@ -70,7 +86,6 @@ const AddPatentForm = () => {
         ...prevData,
         pdf: url,
       }));
-
     } else {
       setFormData((prevData) => ({
         ...prevData,
@@ -78,47 +93,46 @@ const AddPatentForm = () => {
       }));
     }
   };
+
   const handleSubmit = async (e) => {
-    console.log(formData);
     e.preventDefault();
+    console.log(formData);
 
     try {
       const response = await axios.post("http://localhost:5000/api/profiles/addpatents", formData);
-      alert('Patent added successfully'); // Move inside the try block
-      router.push('/');
+      alert("Patent added successfully");
+      router.push("/");
       console.log("Patent added successfully:", response.data);
     } catch (error) {
       console.error("Error adding patent:", error);
     }
   };
 
-
-  const [resumes, setResumes] = useState([
-  ]);
-
+  const [resumes, setResumes] = useState([]);
   const [showMore, setShowMore] = useState(false);
   const maxVisibleResumes = 2;
 
   const handleShowMore = () => {
     setShowMore(!showMore);
   };
+
   const handleUpload = async (e) => {
     const file = e.target.files[0];
     console.log("File uploaded:", file);
 
-
-
     try {
-      // Update resumes state to include the uploaded patent
       setResumes((prevResumes) => [
         ...prevResumes,
-        { name: file.name, lastUsed: new Date().toISOString().slice(0, 19).replace('T', ' '), url: URL.createObjectURL(file) },
+        {
+          name: file.name,
+          lastUsed: new Date().toISOString().slice(0, 19).replace("T", " "),
+          url: URL.createObjectURL(file),
+        },
       ]);
     } catch (error) {
       console.error("Error adding patent:", error);
     }
   };
-
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -239,8 +253,6 @@ const AddPatentForm = () => {
           <p className="mb-4 text-base text-gray-600">
             Be sure to include an updated patent <span className="text-red-500">*</span>
           </p>
-
-
           <div className="w-full space-y-4 overflow-hidden">
             {resumes.slice(0, showMore ? resumes.length : maxVisibleResumes).map((resume, index) => (
               <div key={index} className="flex items-center p-3 mb-2 border rounded-lg bg-gray-50">
@@ -273,9 +285,8 @@ const AddPatentForm = () => {
                   <input
                     type="checkbox"
                     className="w-6 h-6 text-blue-600 rounded focus:ring-blue-500"
-                    onChange={(e) => handleCheckboxChange(e, resume.url)} // Pass resume URL to handleCheckboxChange
+                    onChange={(e) => handleCheckboxChange(e, resume.url)}
                   />
-
                 </div>
               </div>
             ))}
@@ -316,7 +327,6 @@ const AddPatentForm = () => {
               Help Center
             </a>
           </p>
-
         </div>
       </div>
     </div>
