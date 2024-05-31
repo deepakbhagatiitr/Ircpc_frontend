@@ -11,13 +11,11 @@ const Modal = ({
   pdfUrl,
   onClose,
 }) => {
-  const handleViewPdf = () => {
-    if (pdfUrl) {
-      window.open(pdfUrl, "_blank");
-    } else {
-      alert("No PDF available.");
-    }
-  };
+  // const handleViewPdf = () => {
+
+  //     window.open(`http://localhost:5000/${pdfUrl}`, "_blank");
+
+  // };
 
   return (
     <div className="modal-overlay w-[20%]">
@@ -38,10 +36,16 @@ const Modal = ({
         </div>
         <div className="modal-footer">
           <button
-            onClick={handleViewPdf}
+
             className="px-5 py-2 text-blue-500 transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none"
           >
-            View PDF
+            {pdfUrl && (
+              <div>
+                <a href={`http://localhost:5000/${pdfUrl}`} target="_blank" rel="noopener noreferrer">
+                  <p>View Pdf</p>
+                </a>
+              </div>
+            )}
           </button>
           <button
             onClick={onClose}

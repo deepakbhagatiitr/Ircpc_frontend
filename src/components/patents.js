@@ -5,7 +5,13 @@ import { useRouter } from "next/navigation";
 
 const AddPatentForm = () => {
   const router = useRouter();
-  const [helper, setHelper] = useState(null);
+  const [pdfFile, setPdfFile] = useState({});
+
+  const [resumes, setResumes] = useState([
+  ]);
+
+  const [showMore, setShowMore] = useState(false);
+  const maxVisibleResumes = 2;
   const [formData, setFormData] = useState({
     title: "",
     fieldOfInvention: "",
@@ -15,16 +21,15 @@ const AddPatentForm = () => {
       background: ""
     },
     committeeMembers: [],
-    pdf: null,
     email: "",
-    status: "pending approval"
+    status: "pending approval",
+    pdf: pdfFile
   });
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const userdata = JSON.parse(localStorage.getItem('userdata'));
       if (userdata) {
-        setHelper(userdata);
         setFormData(prevFormData => ({
           ...prevFormData,
           email: userdata.contactInformation.instituteWebmailAddress
@@ -52,6 +57,25 @@ const AddPatentForm = () => {
     });
   };
 
+
+
+  const handleCheckboxChange = (e, resume) => {
+    const { checked } = e.target;
+    if (checked) {
+      setFormData((prevData) => ({
+        ...prevData,
+        pdf: resume,
+      }));
+
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        pdf: null,
+      }));
+    }
+  };
+
+
   const handleCommitteeMemberChange = (e, index) => {
     const { name, value } = e.target;
     const updatedMembers = [...formData.committeeMembers];
@@ -72,6 +96,26 @@ const AddPatentForm = () => {
     }));
   };
 
+  const handleShowMore = () => {
+    setShowMore(!showMore);
+  };
+  const handleUpload = async (e) => {
+    const file = e.target.files[0];
+    console.log("File uploaded:", file);
+
+
+
+    try {
+
+      // Update resumes state to include the uploaded patent
+      setResumes((prevResumes) => [
+        ...prevResumes,
+        e.target.files[0]
+      ]);
+    } catch (error) {
+      console.error("Error adding patent:", error);
+    }
+  };
   const removeCommitteeMember = (index) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -79,56 +123,26 @@ const AddPatentForm = () => {
     }));
   };
 
-  const handleCheckboxChange = (e, url) => {
-    const { checked } = e.target;
-    if (checked) {
-      setFormData((prevData) => ({
-        ...prevData,
-        pdf: url,
-      }));
-    } else {
-      setFormData((prevData) => ({
-        ...prevData,
-        pdf: null,
-      }));
-    }
+  const handleFileChange = (e) => {
+    console.log(e.target.files[0]);
+    setFormData((prevData) => ({
+      ...prevData,
+      pdf: e.target.files[0]
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(formData);
-
     try {
-      const response = await axios.post("http://localhost:5000/api/profiles/addpatents", formData);
+      const response = await axios.post("http://localhost:5000/api/profiles/addpatents", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       alert("Patent added successfully");
       router.push("/");
       console.log("Patent added successfully:", response.data);
-    } catch (error) {
-      console.error("Error adding patent:", error);
-    }
-  };
-
-  const [resumes, setResumes] = useState([]);
-  const [showMore, setShowMore] = useState(false);
-  const maxVisibleResumes = 2;
-
-  const handleShowMore = () => {
-    setShowMore(!showMore);
-  };
-
-  const handleUpload = async (e) => {
-    const file = e.target.files[0];
-    console.log("File uploaded:", file);
-
-    try {
-      setResumes((prevResumes) => [
-        ...prevResumes,
-        {
-          name: file.name,
-          lastUsed: new Date().toISOString().slice(0, 19).replace("T", " "),
-          url: URL.createObjectURL(file),
-        },
-      ]);
     } catch (error) {
       console.error("Error adding patent:", error);
     }
@@ -238,6 +252,8 @@ const AddPatentForm = () => {
             >
               Add Committee Member
             </button>
+
+
             <div className="flex justify-center">
               <button
                 type="submit"
@@ -248,6 +264,8 @@ const AddPatentForm = () => {
             </div>
           </form>
         </div>
+
+
         <div className="flex flex-col w-5/12 p-6 bg-white rounded-lg shadow-lg md:w-1/2">
           <h2 className="mb-4 text-2xl font-bold text-gray-800">Patent Upload</h2>
           <p className="mb-4 text-base text-gray-600">
@@ -285,8 +303,9 @@ const AddPatentForm = () => {
                   <input
                     type="checkbox"
                     className="w-6 h-6 text-blue-600 rounded focus:ring-blue-500"
-                    onChange={(e) => handleCheckboxChange(e, resume.url)}
+                    onChange={(e) => handleCheckboxChange(e, resume)} // Pass resume URL to handleCheckboxChange
                   />
+
                 </div>
               </div>
             ))}
@@ -319,7 +338,7 @@ const AddPatentForm = () => {
             />
           </div>
           <p className="mt-4 text-base text-gray-500">
-            Submitting this application will not update your profile.
+            Submitting this application won't change your profile.
           </p>
           <p className="mt-4 text-base text-gray-400">
             Application powered by unknown |{" "}
@@ -327,6 +346,7 @@ const AddPatentForm = () => {
               Help Center
             </a>
           </p>
+
         </div>
       </div>
     </div>

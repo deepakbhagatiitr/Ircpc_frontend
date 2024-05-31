@@ -23,9 +23,9 @@ export default function Row({ serialNumber, name, title, background, status, sub
   const handleViewDetails = async () => {
     setIsModalOpen(true);
     try {
-      const response = await axios.get("http://localhost:5000/api/profiles/getpatents");
+      const response = await axios.get("http://localhost:5000/api/profiles/addpatents/pdfs");
       const patent = response.data[serialNumber - 1];
-      setPdfUrl(patent.pdf);
+      setPdfUrl(patent.pdf.path);
     } catch (error) {
       console.error("Error fetching patent details:", error);
     }
