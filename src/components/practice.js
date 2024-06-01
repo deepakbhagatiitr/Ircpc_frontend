@@ -1,56 +1,118 @@
-"use client";
-import React from "react";
-import { useRouter } from 'next/navigation';
-import { FiLogOut } from 'react-icons/fi';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-export default function Mainpage() {
-  const router = useRouter()
-  const Logout = () => {
-    localStorage.clear()
-    router.push('/signin')
-  }
+export default function Query() {
+  const [query, setQuery] = useState('');
+  const [comment, setComment] = useState('');
+  const [queries, setQueries] = useState([]);
+  const [userdata, setUserData] = useState(null);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedUserData = localStorage.getItem('userdata');
+      if (storedUserData) {
+        setUserData(JSON.parse(storedUserData));
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (userdata) {
+      handleGetQuery();
+    }
+  }, [userdata]);
+
+  const handleSubmit = async () => {
+    try {
+      const response = await axios.post('http://localhost:5000/api/query/createquery', {
+        name: userdata.person.fullName,
+        email: userdata.contactInformation.instituteWebmailAddress,
+        query,
+        comment
+      });
+      window.location.reload();
+      console.log('Query created:', response.data);
+    } catch (error) {
+      console.error('Error creating query:', error);
+    }
+  };
+
+  const handleGetQuery = async () => {
+    try {
+      const response = await axios.post('http://localhost:5000/api/query/getallquery', {
+        email: userdata.contactInformation.instituteWebmailAddress
+      });
+      setQueries(response.data);
+    } catch (error) {
+      console.error('Error getting queries:', error);
+    }
+  };
+
+  const handleUpdateQuery = async (id) => {
+    try {
+      const response = await axios.put(`http://localhost:5000/api/query/updatequery/${id}`, {
+        comment
+      });
+      window.location.reload();
+      console.log('Query updated:', response.data);
+    } catch (error) {
+      console.error('Error updating query:', error);
+    }
+  };
+
   return (
-    <>
-      <div className="w-full min-h-screen bg-gradient-to-r from-blue-50 via-blue-100 to-blue-200">
-        <div className="h-[8vh] px-4 flex items-center justify-between shadow-lg">
-          <div className="px-[2vw]">
-            <img src="./img/logo.png" className="w-auto h-12 md:h-16 lg:h-20" alt="Logo" />
-          </div>
-          <div className="relative w-full max-w-lg">
-            <input
-              type="text"
-              placeholder="Search..."
-              className="w-full p-3 pl-10 pr-4 text-gray-700 bg-white border rounded-lg shadow-sm outline-none focus:outline-none focus:border-blue-500"
-            />
-            <svg
-              className="absolute w-5 h-5 text-gray-400 transform -translate-y-1/2 left-3 top-1/2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M21 21l-4.35-4.35M17 11a6 6 0 11-12 0 6 6 0 0112 0z"
-              />
-            </svg>
-          </div>
-          <div className="relative group">
-            <button
-              type="button"
-              onClick={Logout}
-              className="flex items-center px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none "
-            >
-              <FiLogOut className="mr-2" />
-              Logout
-            </button>
-
-          </div>
+    <div className="query-container h-[75%] mx-auto">
+      <div>
+        <input
+          type="text"
+          className="query-input"
+          placeholder="Query"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+        <button className="query-button" onClick={handleSubmit}>
+          Create Query
+        </button>
+        <div className="query-list">
+          {queries.map((queryData) => (
+            <div key={queryData._id} className="query-item">
+              <div className="flexbox">
+                <h3 className="query-name">{queryData.name}</h3>
+                <p className="query-date">{new Date(queryData.date).toLocaleString()}</p>
+              </div>
+              <p className="query-email">{queryData.email}</p>
+              <div>
+                <b>Query:</b>
+                <em className="query-text">{queryData.query}</em>
+              </div>
+              {userdata && userdata.contactInformation.instituteWebmailAddress === 'admin@ipr.iitr.ac.in' && (
+                <div>
+                  <input
+                    type="text"
+                    placeholder="Add comment"
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                  />
+                  <button
+                    className="query-button"
+                    onClick={() => handleUpdateQuery(queryData._id)}
+                  >
+                    Add Comment
+                  </button>
+                </div>
+              )}
+              <div>
+                <b>Admin Comment: </b>
+                {queryData.comment ? (
+                  <em className="comm-text">{queryData.comment}</em>
+                ) : (
+                  <span>No comments till now</span>
+                )}
+              </div>
+            </div>
+          ))}
         </div>
-        <hr className="border-gray-300" />
       </div>
-    </>
+    </div>
   );
 }

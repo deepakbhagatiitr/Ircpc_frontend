@@ -1,118 +1,207 @@
 "use client"
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import Row from "./table_row";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-const Addrow = (index, name, title, background, status, submittedon, view_details) => {
-  const tbody = document.getElementById('patentTableBody');
+export default function Query() {
+  // const [name, setName] = useState('');
+  // const [email, setEmail] = useState('');
+  const [query, setQuery] = useState('');
+  const [comment, setComment] = useState('');
+  const [queries, setQueries] = useState([]);
+  const [name, setName] = useState('');
+  const [userdata, setUserData] = useState(null);
+  const [email, setEmail] = useState('');
 
-  const newRow = document.createElement('tr');
-  newRow.innerHTML = `
-    <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
-        <div className="flex items-center">
-            <div>
-                <div className="text-sm leading-5 text-gray-800">${id}</div>
-            </div>
-        </div>
-    </td>
-    <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
-        <div className="text-sm leading-5 text-blue-900">${name}</div>
-    </td>
-    <td className="px-6 py-4 text-sm leading-5 text-blue-900 whitespace-no-wrap border-b border-gray-500">${title}</td>
-    <td className="px-6 py-4 text-sm leading-5 text-blue-900 whitespace-no-wrap border-b border-gray-500">${background}</td>
-    <td className="px-6 py-4 text-sm leading-5 text-blue-900 whitespace-no-wrap border-b border-gray-500">
-        <span className="relative inline-block px-3 py-1 font-semibold leading-tight text-green-900">
-        <span aria-hidden className="absolute inset-0 bg-green-200 rounded-full opacity-50"></span>
-        <span className="relative text-xs">${status}</span>
-    </span>
-    </td>
-    <td className="px-6 py-4 text-sm leading-5 text-blue-900 whitespace-no-wrap border-b border-gray-500">${submittedon}</td>
-    <td className="px-6 py-4 text-sm leading-5 text-right whitespace-no-wrap border-b border-gray-500">
-        <button className="px-5 py-2 text-blue-500 transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none">${view_details}</button>
-    </td>
-  `;
-  tbody.appendChild(newRow);
-}
-
-export default function Table() {
-  const [patents, setPatents] = useState([]);
-  
   useEffect(() => {
-    const userdata = JSON.parse(localStorage.getItem('userdata'));
-    if (userdata?.contactInformation?.instituteWebmailAddress) {
-      const fetchPatents = async () => {
-        try {
-          const response = await axios.get(
-            `http://localhost:5000/api/profiles/patents/${userdata.contactInformation.instituteWebmailAddress}`
-          );
-          setPatents(response.data);
-        } catch (error) {
-          console.error("Error fetching patents:", error);
-        }
-      };
-      fetchPatents();
+    handleGetQuery();
+    if (typeof window !== 'undefined') {
+      const storedUserData = localStorage.getItem('userdata');
+      if (storedUserData) {
+        setName(storedUserData.person.fullName);
+        setEmail(storedUserData.contactInformation.instituteWebmailAddress);
+        setUserData(JSON.parse(storedUserData));
+      }
     }
+    console.log(userdata)
   }, []);
 
+  const handleSubmit = async () => {
+    // setName(userdata?.person.fullName)
+    // setEmail(userdata?.contactInformation.instituteWebmailAddress)
+    // const name =userdata?.person.fullName
+    // const email=userdata?.contactInformation.instituteWebmailAddress
+    try {
+      const response = await axios.post('http://localhost:5000/api/query/createquery', {
+        name,
+        email,
+        query,
+        comment
+      });
+      window.location.reload();
+      console.log('Query created:', response.data);
+    } catch (error) {
+      console.error('Error creating query:', error);
+    }
+  };
+
+  const handleGetQuery = async () => {
+    try {
+      const response = await axios.post('http://localhost:5000/api/query/getallquery', {
+        email
+      });
+      console.log('Queries retrieved:', response.data);
+      setQueries(response.data);
+    } catch (error) {
+      console.error('Error getting queries:', error);
+    }
+  };
+
+  const handleUpdateQuery = async (id) => {
+    try {
+      const response = await axios.put(`http://localhost:5000/api/query/updatequery/${id}`, {
+        comment
+      });
+      console.log('Query updated:', response.data);
+      window.location.reload();
+    } catch (error) {
+      console.error('Error updating query:', error);
+    }
+  };
+  if (userdata?.contactInformation.instituteWebmailAddress == 'admin@ipr.iitr.ac.in') {
+    return (
+      <>
+        <div className="query-container h-[75%] mx-auto">
+          <div>
+            <input
+              type="text"
+              className="query-input"
+              placeholder="Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+            <input
+              type="email"
+              className="query-input"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <input
+              type="text"
+              className="query-input"
+              placeholder="Query"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+            <button className="query-button" onClick={handleSubmit}>
+              Create Query
+            </button>
+            {/* ...existing code... */}
+            <div className="query-list ">
+              {queries.map((query) => (
+                <div key={query._id} className="query-item">
+                  <div className="flebox">
+                    <h3 className="query-name">{query.name}</h3>
+                    <p className="query-date">
+                      {new Date(query.date).toLocaleString("en-US", {
+                        timeZone: "UTC",
+                        hour12: true,
+                        hour: "numeric",
+                        minute: "numeric",
+                      })}
+                    </p>
+                  </div>
+                  <p className="query-email">{query.email}</p>
+                  <br />
+                  <div>
+                    <b>Query:</b>
+                    <em className="query-text">{query.query}</em>
+                  </div>
+                  <div>
+                    <b>Comment:</b>
+                    <em className="comm-text">{query.comment}</em>
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="Add comment"
+                    onChange={(e) => setComment(e.target.value)}
+                  />
+                  <button
+                    className="query-button"
+                    onClick={() => handleUpdateQuery(query._id)}
+                  >
+                    Add Comment
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
   return (
     <>
-      <div className="min-h-screen py-2 pr-10 my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
-        <div className="inline-block min-w-full px-8 pt-3 overflow-hidden align-middle bg-white rounded-bl-lg rounded-br-lg shadow shadow-dashboard">
-          <table className="min-w-full">
-            <thead>
-              <tr>
-                <th className="px-6 py-3 leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300">
-                  Serial No
-                </th>
-                <th className="px-6 py-3 text-sm leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300">
-                  Applicant Name
-                </th>
-                <th className="px-6 py-3 text-sm leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300">
-                  Title
-                </th>
-                <th className="px-6 py-3 text-sm leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300">
-                  Background
-                </th>
-                <th className="px-6 py-3 text-sm leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300">
-                  Status
-                </th>
-                <th className="px-6 py-3 text-sm leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300">
-                  Submitted on
-                </th>
-                <th className="px-6 py-3 text-sm leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300">
-                  Details
-                </th>
-                <th className="px-6 py-3 border-b-2 border-gray-300"></th>
-              </tr>
-            </thead>
-            <tbody className="bg-white">
-              {patents.map((patent, index) => (
-                <Row
-                  key={patent._id}
-                  serialNumber={index + 1}
-                  name={patent.inventor.name}
-                  title={patent.title}
-                  background={patent.inventor.background}
-                  status={
-                    patent.status.DSRIC
-                      ? "DSRIC Approved"
-                      : patent.status.ADI
-                        ? "ADI Approved"
-                        : patent.status.HOD
-                          ? "HOD Approved"
-                          : "Pending Approval"
-                  }
-                  submittedon={new Date(
-                    patent.dateOfApplication
-                  ).toLocaleDateString()}
-                  view_details="View details"
-                />
-              ))}
-            </tbody>
-          </table>
-          <div className="mt-4 sm:flex-1 sm:flex sm:items-center sm:justify-between work-sans"></div>
+      <div className="query-container h-[75%] mx-auto">
+        <div>
+          <input
+            type="text"
+            className="query-input"
+            placeholder="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <input
+            type="email"
+            className="query-input"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            type="text"
+            className="query-input"
+            placeholder="Query"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+          <button className="query-button" onClick={handleSubmit}>
+            Create Query
+          </button>
+          {/* ...existing code... */}
+          <div className="query-list ">
+            {queries.map((query) => (
+              <div key={query._id} className="query-item">
+                <div className="flebox">
+                  <h3 className="query-name">{query.name}</h3>
+                  <p className="query-date">
+                    {new Date(query.date).toLocaleString("en-US", {
+                      timeZone: "UTC",
+                      hour12: true,
+                      hour: "numeric",
+                      minute: "numeric",
+                    })}
+                  </p>
+                </div>
+                <p className="query-email">{query.email}</p>
+                <br />
+                <div>
+                  <b>Query:</b>
+                  <em className="query-text">{query.query}</em>
+                </div>
+                <div>
+                  <b>Admin Comment: </b>
+                  {query.comment ? (
+                    <em className="comm-text">{query.comment}</em>
+                  ) : (
+                    <span>No comments till now</span>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </>
-  );
+  )
 }
