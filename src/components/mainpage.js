@@ -3,7 +3,7 @@ import React, { use, useState,useEffect } from "react";
 import { useRouter } from 'next/navigation';
 import Avatar from "@mui/material/Avatar";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
-
+import { FiLogOut } from 'react-icons/fi';
 export default function Mainpage(){
   const router = useRouter()
   const Logout=()=>{
@@ -12,49 +12,48 @@ export default function Mainpage(){
   }
     return (
       <>
-        <div className="w-[100vw] ">
-          <div className="h-[8vh] bg-[#d7f1ff] flex items-center justify-between">
-            <div className="px-[2vw] ">
-              <img src="./img/logo.png" className="w-[24vw]" />
-            </div>
-            <div className="inline-flex w-4/12 h-12 px-2 bg-transparent border rounded lg:px-6">
-              <div className="relative flex flex-wrap items-stretch w-full h-full mb-6">
-                <input
-                  type="text"
-                  className=" bg-[#dbe3ff] flex-shrink flex-grow flex-auto leading-normal tracking-wide w-px flex-1 border border-black rounded-md px-3 relative focus:outline-none text-xxs lg:text-xs lg:text-base text-[#a9acb1] font-thin"
-                  placeholder="Enter your search term here"
-                ></input>
-              </div>
-            </div>
-            <div className="flex px-[2vw] ">
-            <button onClick={Logout} type="button" class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Logout</button>
-            </div>
+         <div className="w-full">
+        <div className="h-[10vh]  pr-4  bg-blue-100 flex items-center justify-between shadow-md">
+        <div className="px-[1.1vw]">
+            <img src="./img/logo.png" className="w-auto h-12 md:h-16 lg:h-20" alt="Logo" />
           </div>
-          <hr className="border-gray-500 border-t-1"></hr>
-          {/* <div className="bg-white h-[10vh] flex justify-between items-center px-[10vw]">
-            <div className="flex flex-col justify-center">
-              <img src="./img/Dashboard.png" className="h-[4vh] w-14 ml-2" />
-              <h2 className="">Dashboard</h2>
-            </div>
-            <div className="flex flex-col">
-              <img src="./img/stat.png" className="h-[4vh] w-14 ml-2" />
-              <h2 className="">Statistics</h2>
-            </div>
-            <div className="flex flex-col">
-              <img src="./img/message.png" className="h-[4vh] w-14 ml-2" />
-              <h2 className="">Messages</h2>
-            </div>
-            <div className="flex flex-col">
-              <img src="./img/calender.png" className="h-[4vh] w-14 ml-2" />
-              <h2 className="">Calender</h2>
-            </div>
-            <div className="flex flex-col">
-              <img src="./img/report.png" className="h-[4vh] w-14 ml-2" />
-              <h2 className="">Reports</h2>
-            </div> */}
-          {/* </div> */}
-          <hr className="border-gray-500 border-t-1"></hr>
+          <div className="inline-flex w-4/12 h-12 px-2 bg-transparent border rounded lg:px-6">
+          <div className="relative w-full max-w-lg">
+            <input
+              type="text"
+              placeholder="Search..."
+              className="w-full p-3 pl-10 pr-4 text-gray-700 bg-white border rounded-lg shadow-sm outline-none focus:outline-none focus:border-blue-500"
+            />
+            <svg
+              className="absolute w-5 h-5 text-gray-400 transform -translate-y-1/2 left-3 top-1/2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M21 21l-4.35-4.35M17 11a6 6 0 11-12 0 6 6 0 0112 0z"
+              />
+            </svg>
+          </div>
+          </div>
+          <div className="relative group">
+            <button
+              type="button"
+              onClick={Logout}
+              className="flex items-center px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none "
+            >
+              <FiLogOut className="mr-2" />
+              Logout
+            </button>
+
+          </div>
         </div>
+        <hr className="border-gray-300" />
+      </div>
       </>
     );
 }

@@ -67,36 +67,36 @@ export default function Table() {
 
   if (userdata?.contactInformation?.instituteWebmailAddress === 'admin@ipr.iitr.ac.in') {
     return (
-      <div className="min-h-screen py-2 pr-10 my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
-        <div className="inline-block min-w-full px-8 pt-3 overflow-hidden align-middle bg-white rounded-bl-lg rounded-br-lg shadow shadow-dashboard">
-          <table className="min-w-full">
+      <div className="min-h-screen overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+        <div className="inline-block w-full px-8 pt-3 overflow-hidden align-middle bg-white rounded-bl-lg rounded-br-lg shadow shadow-dashboard">
+          <table className="w-full">
             <thead>
               <tr>
-                <th className="px-6 py-3 leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300">
+                <th className="py-3 leading-4 tracking-wider text-left text-center text-blue-500 border-b-2 border-gray-300 tpx-6 ">
                   Serial No
                 </th>
-                <th className="px-6 py-3 text-sm leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300">
+                <th className="py-3 text-sm leading-4 tracking-wider text-left text-center text-blue-500 border-b-2 border-gray-300 tpx-6 ">
                   Applicant Name
                 </th>
-                <th className="px-6 py-3 text-sm leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300">
+                <th className="py-3 text-sm leading-4 tracking-wider text-left text-center text-blue-500 border-b-2 border-gray-300 tpx-6 ">
                   Title
                 </th>
-                <th className="px-6 py-3 text-sm leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300">
+                <th className="py-3 text-sm leading-4 tracking-wider text-left text-center text-blue-500 border-b-2 border-gray-300 tpx-6 ">
                   Background
                 </th>
-                <th className="px-6 py-3 text-sm leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300">
+                <th className="py-3 text-sm leading-4 tracking-wider text-left text-center text-blue-500 border-b-2 border-gray-300 tpx-6 ">
                   Status
                 </th>
-                <th className="px-6 py-3 text-sm leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300">
+                <th className="py-3 text-sm leading-4 tracking-wider text-left text-center text-blue-500 border-b-2 border-gray-300 tpx-6 ">
                   Submitted on
                 </th>
-                <th className="px-6 py-3 text-sm leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300">
+                <th className="py-3 text-sm leading-4 tracking-wider text-left text-center text-blue-500 border-b-2 border-gray-300 tpx-6 ">
                   Action
                 </th>
-                <th className="px-6 py-3 text-sm leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300">
+                <th className="py-3 text-sm leading-4 tracking-wider text-left text-center text-blue-500 border-b-2 border-gray-300 tpx-6 ">
                   Details
                 </th>
-                <th className="px-6 py-3 border-b-2 border-gray-300"></th>
+                <th className="py-3 text-center border-b-2 border-gray-300 tpx-6 "></th>
               </tr>
             </thead>
             <tbody className="bg-white">
@@ -134,29 +134,29 @@ export default function Table() {
 
   return (
     <div className="min-h-screen py-2 pr-10 my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
-      <div className="inline-block min-w-full px-8 pt-3 overflow-hidden align-middle bg-white rounded-bl-lg rounded-br-lg shadow shadow-dashboard">
+      <div className="inline-block min-w-full px-8 overflow-hidden align-middle bg-white rounded-bl-lg rounded-br-lg shadow shadow-dashboard">
         <table className="min-w-full">
           <thead>
             <tr>
-              <th className="px-6 py-3 leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300">
+              <th className="px-6 py-3 leading-4 tracking-wider text-center text-blue-500 border-b-2 border-gray-300">
                 Serial No
               </th>
-              <th className="px-6 py-3 text-sm leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300">
+              <th className="px-6 py-3 text-sm leading-4 tracking-wider text-center text-blue-500 border-b-2 border-gray-300">
                 Applicant Name
               </th>
-              <th className="px-6 py-3 text-sm leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300">
+              <th className="px-6 py-3 text-sm leading-4 tracking-wider text-center text-blue-500 border-b-2 border-gray-300">
                 Title
               </th>
-              <th className="px-6 py-3 text-sm leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300">
+              <th className="px-6 py-3 text-sm leading-4 tracking-wider text-center text-blue-500 border-b-2 border-gray-300">
                 Background
               </th>
-              <th className="px-6 py-3 text-sm leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300">
+              <th className="px-6 py-3 text-sm leading-4 tracking-wider text-center text-blue-500 border-b-2 border-gray-300">
                 Status
               </th>
-              <th className="px-6 py-3 text-sm leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300">
+              <th className="px-6 py-3 text-sm leading-4 tracking-wider text-center text-blue-500 border-b-2 border-gray-300">
                 Submitted on
               </th>
-              <th className="px-6 py-3 text-sm leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300">
+              <th className="px-6 py-3 text-sm leading-4 tracking-wider text-center text-blue-500 border-b-2 border-gray-300">
                 Details
               </th>
               <th className="px-6 py-3 border-b-2 border-gray-300"></th>

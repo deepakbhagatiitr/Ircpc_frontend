@@ -1,105 +1,56 @@
-const connectToMongo = require('./db');
-const express = require('express');
-const { sendMail } = require('./utils/sendmail');
-var cors = require('cors');
-require("dotenv").config();
-const multer = require("multer");
-const path = require('path');
-const Patents = require('./schema/Patents'); // Ensure you import the Patents model
+"use client";
+import React from "react";
+import { useRouter } from 'next/navigation';
+import { FiLogOut } from 'react-icons/fi';
 
-connectToMongo();
-const app = express();
-const port = process.env.PORT || 5000;
-// Multer storage configuration
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/');
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.originalname);
+export default function Mainpage() {
+  const router = useRouter()
+  const Logout = () => {
+    localStorage.clear()
+    router.push('/signin')
   }
-});
+  return (
+    <>
+      <div className="w-full min-h-screen bg-gradient-to-r from-blue-50 via-blue-100 to-blue-200">
+        <div className="h-[8vh] px-4 flex items-center justify-between shadow-lg">
+          <div className="px-[2vw]">
+            <img src="./img/logo.png" className="w-auto h-12 md:h-16 lg:h-20" alt="Logo" />
+          </div>
+          <div className="relative w-full max-w-lg">
+            <input
+              type="text"
+              placeholder="Search..."
+              className="w-full p-3 pl-10 pr-4 text-gray-700 bg-white border rounded-lg shadow-sm outline-none focus:outline-none focus:border-blue-500"
+            />
+            <svg
+              className="absolute w-5 h-5 text-gray-400 transform -translate-y-1/2 left-3 top-1/2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M21 21l-4.35-4.35M17 11a6 6 0 11-12 0 6 6 0 0112 0z"
+              />
+            </svg>
+          </div>
+          <div className="relative group">
+            <button
+              type="button"
+              onClick={Logout}
+              className="flex items-center px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none "
+            >
+              <FiLogOut className="mr-2" />
+              Logout
+            </button>
 
-const upload = multer({ storage: storage });
-
-app.use(cors({
-  origin: 'http://localhost:8080',
-  methods: ['GET', 'POST'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true
-}));
-app.use(express.json());
-app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Serve static files
-
-// Define routes
-app.use('/api/auth', require('./crud/auth'));
-app.use('/api/query', require('./crud/query'));
-app.use('/api/profiles', require('./crud/dashboard'));
-
-
-
-app.post("/api/profiles/addpatents", upload.single('pdf'), async (req, res) => {
-  try {
-    const {
-      email,
-      title,
-      fieldOfInvention,
-      detailedDescription,
-      inventor,
-      committeeMembers,
-      status
-    } = req.body;
-
-    const pdfPath = `/uploads/${req.files[0]}`;
-    console.log(pdfPath);
-    const newPatent = new Patents({
-      email,
-      title,
-      fieldOfInvention,
-      detailedDescription,
-      inventor,
-      committeeMembers,
-      pdf: pdfPath,
-      status
-    });
-
-    const savedPatent = await newPatent.save();
-
-    // Send email notifications
-    const receiverEmail = email;
-    const senderEmail = "iprcelliitr84@gmail.com";
-    const emailSubject = "Patent is added";
-    const emailMessage = "Congratulations! You have successfully added your patent claim";
-
-    try {
-      await sendMail(receiverEmail, senderEmail, emailSubject, emailMessage);
-
-      const websiteURL = `http://localhost:8080/ViewPatent?id=${savedPatent._id}`;
-      const emailMessage1 = `Someone has added a patent claim, please visit the website to verify: ${websiteURL}`;
-      await sendMail(receiverEmail, senderEmail, emailSubject, emailMessage1);
-
-      res.status(201).json({ message: "Patent added successfully", patent: savedPatent });
-    } catch (emailError) {
-      console.error("Error sending email:", emailError.message);
-      res.status(500).json({ message: "Error sending email", error: emailError.message });
-    }
-
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).json({ message: "Error adding patent", error });
-  }
-});
-
-
-app.get('/pdfs', async (req, res) => {
-  try {
-    const pdfs = await Pdf.find({});
-    res.json(pdfs);
-  } catch (err) {
-    res.status(500).send(err);
-  }
-});
-
-app.listen(port, () => {
-  console.log(`Server listening at http://localhost:${port}`);
-});
+          </div>
+        </div>
+        <hr className="border-gray-300" />
+      </div>
+    </>
+  );
+}

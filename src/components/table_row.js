@@ -45,7 +45,7 @@ export default function Row({ serialNumber, name, title, background, status, sub
   return (
     <>
       <tr>
-        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
+        <td className="px-6 py-4 text-center whitespace-no-wrap border-b border-gray-500">
           <div className="flex items-center">
             <div>
               <div className="text-sm leading-5 text-gray-800">
@@ -54,16 +54,16 @@ export default function Row({ serialNumber, name, title, background, status, sub
             </div>
           </div>
         </td>
-        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
+        <td className="px-6 py-4 text-center whitespace-no-wrap border-b border-gray-500">
           <div className="text-sm leading-5 text-blue-900">{name}</div>
         </td>
-        <td className="px-6 py-4 text-sm leading-5 text-blue-900 whitespace-no-wrap border-b border-gray-500">
+        <td className="px-6 py-4 text-sm leading-5 text-center text-blue-900 whitespace-no-wrap border-b border-gray-500">
           {truncateTitle(title)}
         </td>
-        <td className="px-6 py-4 text-sm leading-5 text-blue-900 whitespace-no-wrap border-b border-gray-500">
+        <td className="px-6 py-4 text-sm leading-5 text-center text-blue-900 whitespace-no-wrap border-b border-gray-500">
           {background}
         </td>
-        <td className="px-6 py-4 text-sm leading-5 text-blue-900 whitespace-no-wrap border-b border-gray-500">
+        <td className="px-6 py-4 text-sm leading-5 text-center text-blue-900 whitespace-no-wrap border-b border-gray-500">
           <span className="relative inline-block px-3 py-1 font-semibold leading-tight text-green-900">
             <span
               aria-hidden
@@ -72,11 +72,11 @@ export default function Row({ serialNumber, name, title, background, status, sub
             <span className="relative text-xs">{status}</span>
           </span>
         </td>
-        <td className="px-6 py-4 text-sm leading-5 text-blue-900 whitespace-no-wrap border-b border-gray-500">
+        <td className="px-6 py-4 text-sm leading-5 text-center text-blue-900 whitespace-no-wrap border-b border-gray-500">
           {submittedon}
         </td>
         {isAdmin && (
-          <td className="px-6 py-4 text-sm leading-5 text-blue-900 whitespace-no-wrap border-b border-gray-500">
+          <td className="px-6 py-4 text-sm leading-5 text-center text-blue-900 whitespace-no-wrap border-b border-gray-500">
             <button
               onClick={handleAction}
               className="px-5 py-2 text-blue-500 transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none"
@@ -85,7 +85,7 @@ export default function Row({ serialNumber, name, title, background, status, sub
             </button>
           </td>
         )}
-        <td className="px-6 py-4 text-sm leading-5 text-right whitespace-no-wrap border-b border-gray-500">
+        <td className="px-6 py-4 text-sm leading-5 text-center text-right whitespace-no-wrap border-b border-gray-500">
           <button
             onClick={handleViewDetails}
             className="px-5 py-2 text-blue-500 transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none"

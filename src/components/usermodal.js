@@ -37,7 +37,7 @@ const Modal = ({
         <div className="modal-footer">
           <button
 
-            className="px-5 py-2 text-blue-500 transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none"
+            className="px-5 py-2 mr-2 text-blue-500 transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none"
           >
             {pdfUrl && (
               <div>

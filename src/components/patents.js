@@ -22,6 +22,7 @@ const AddPatentForm = () => {
     },
     committeeMembers: [],
     email: "",
+    depEmail:"",
     status: "pending approval",
     pdf: pdfFile
   });
@@ -86,6 +87,17 @@ const AddPatentForm = () => {
     }));
   };
 
+  const handleCommitteeMemberDeptChange = (e, index) => {
+    const { name, value } = e.target;
+    formData.depEmail=e.target.value;
+    const updatedMembers = [...formData.committeeMembers];
+    updatedMembers[index] = { ...updatedMembers[index], [name]: value };
+    setFormData((prevData) => ({
+      ...prevData,
+      committeeMembers: updatedMembers,
+    }));
+  };
+
   const addCommitteeMember = () => {
     setFormData((prevData) => ({
       ...prevData,
@@ -123,13 +135,6 @@ const AddPatentForm = () => {
     }));
   };
 
-  const handleFileChange = (e) => {
-    console.log(e.target.files[0]);
-    setFormData((prevData) => ({
-      ...prevData,
-      pdf: e.target.files[0]
-    }));
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -228,14 +233,18 @@ const AddPatentForm = () => {
                   className="w-full p-2 border rounded-md"
                 />
                 <label className="block mt-2 mb-2 text-lg">Committee Member Department:</label>
-                <input
-                  type="text"
+                <select
                   name="department"
-                  value={member.department}
-                  onChange={(e) => handleCommitteeMemberChange(e, index)}
-                  placeholder="Department"
+                  onChange={(e) => handleCommitteeMemberDeptChange(e, index)}
                   className="w-full p-2 border rounded-md"
-                />
+                >
+                  <option value="">Select Department</option>
+                  <option value="deepak1@me.iitr.ac.in">Mechanical Department</option>
+                  <option value="deepak988088@gmail.com">Chemical Department</option>
+                  <option value="bhagatd117@gmail.com">Civil Department</option>
+                  {/* <option value="Electrical Department">Electrical Department</option>
+                  <option value="Computer Science Department">Computer Science Department</option> */}
+                </select>
                 <button
                   type="button"
                   onClick={() => removeCommitteeMember(index)}
