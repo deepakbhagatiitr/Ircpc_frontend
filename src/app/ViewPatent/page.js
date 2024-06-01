@@ -83,7 +83,7 @@ export default function ViewPatent() {
                 </button>
               )}
               {!approved && (
-                <button onClick={() => rejectPatent(id)} className="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600" onClick={() => rejectPatent(id)}>
+                <button  className="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600" onClick={() => rejectPatent(id)}>
                   Reject
                 </button>
               )}
