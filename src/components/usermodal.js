@@ -13,7 +13,7 @@ const Modal = ({
 }) => {
   // const handleViewPdf = () => {
 
-  //     window.open(`http://localhost:5000/${pdfUrl}`, "_blank");
+  //     window.open(`https://ircpc-backend.onrender.com/${pdfUrl}`, "_blank");
 
   // };
 
@@ -41,7 +41,7 @@ const Modal = ({
           >
             {pdfUrl && (
               <div>
-                <a href={`http://localhost:5000/${pdfUrl}`} target="_blank" rel="noopener noreferrer">
+                <a href={`https://ircpc-backend.onrender.com/${pdfUrl}`} target="_blank" rel="noopener noreferrer">
                   <p>View Pdf</p>
                 </a>
               </div>

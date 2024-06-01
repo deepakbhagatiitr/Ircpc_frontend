@@ -22,7 +22,7 @@ const AddPatentForm = () => {
     },
     committeeMembers: [],
     email: "",
-    depEmail:"",
+    depEmail: "",
     status: "pending approval",
     pdf: pdfFile
   });
@@ -89,7 +89,7 @@ const AddPatentForm = () => {
 
   const handleCommitteeMemberDeptChange = (e, index) => {
     const { name, value } = e.target;
-    formData.depEmail=e.target.value;
+    formData.depEmail = e.target.value;
     const updatedMembers = [...formData.committeeMembers];
     updatedMembers[index] = { ...updatedMembers[index], [name]: value };
     setFormData((prevData) => ({
@@ -140,7 +140,7 @@ const AddPatentForm = () => {
     e.preventDefault();
     console.log(formData);
     try {
-      const response = await axios.post("http://localhost:5000/api/profiles/addpatents", formData, {
+      const response = await axios.post("https://ircpc-backend.onrender.com/api/profiles/addpatents", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

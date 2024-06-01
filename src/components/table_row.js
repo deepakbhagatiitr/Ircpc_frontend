@@ -23,7 +23,7 @@ export default function Row({ serialNumber, name, title, background, status, sub
   const handleViewDetails = async () => {
     setIsModalOpen(true);
     try {
-      const response = await axios.get("http://localhost:5000/api/profiles/addpatents/pdfs");
+      const response = await axios.get("https://ircpc-backend.onrender.com/api/profiles/addpatents/pdfs");
       const patent = response.data[serialNumber - 1];
       setPdfUrl(patent.pdf.path);
     } catch (error) {

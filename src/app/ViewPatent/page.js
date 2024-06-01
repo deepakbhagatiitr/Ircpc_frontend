@@ -17,7 +17,7 @@ export default function ViewPatent() {
   const fetchPatentDetails = async (patentId) => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/profiles/patent/${patentId}`
+        `https://ircpc-backend.onrender.com/api/profiles/patent/${patentId}`
       );
       console.log(response.data);
       setPatent(response.data);
@@ -30,7 +30,7 @@ export default function ViewPatent() {
   const approvePatent = async (patentId) => {
     try {
       await axios.put(
-        `http://localhost:5000/api/profiles/patents/${patentId}/approve`
+        `https://ircpc-backend.onrender.com/api/profiles/patents/${patentId}/approve`
       );
       setApproved(true);
       // Optionally, update UI or navigate to another page after approval
@@ -42,7 +42,7 @@ export default function ViewPatent() {
   const rejectPatent = async (id) => {
     try {
       await axios.put(
-        `http://localhost:5000/api/profiles/patents/${id}/reject`
+        `https://ircpc-backend.onrender.com/api/profiles/patents/${id}/reject`
       );
       setApproved(false);
       // Optionally, update UI or navigate to another page after rejection
@@ -53,54 +53,37 @@ export default function ViewPatent() {
   return (
     <>
       {patent ? (
-        <div className="w-[100vw] min-h-screen mx-auto p-6 bg-white shadow-md rounded-lg flex items-center justify-center">
-          <div className="p-3 border-t border-b border-l border-r border-gray-600">
-            <div className="mb-4 text-3xl font-bold">Patent Details</div>
-            <div className="mb-2 text-2xl font-semibold">
-              Applicant Name :
-              <span className="text-xl font-normal text-">
-                {" "}
-                {patent.inventor?.name}
-              </span>
+        <div className="flex items-center justify-center min-h-screen bg-gray-100">
+          <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
+            <div className="mb-6 text-3xl font-bold text-center">Patent Details</div>
+            <div className="mb-4">
+              <span className="mr-3 text-lg font-semibold">Applicant Name:</span>
+              <span className="text-xl">{patent.inventor?.name}</span>
             </div>
-            <div className="mb-2 text-2xl font-semibold">
-              Applicant background :
-              <span className="text-xl font-normal text-">
-                {patent.inventor?.background}
-              </span>
+            <div className="mb-4">
+              <span className="mr-3 text-lg font-semibold">Applicant Background:</span>
+              <span className="text-xl">{patent.inventor?.background}</span>
             </div>
-            <div className="mb-2 text-2xl font-semibold">
-              Title of the Patent:
-              <span className="text-xl font-normal text-"> {patent.title}</span>
+            <div className="mb-4">
+              <span className="mr-3 text-lg font-semibold">Title of the Patent:</span>
+              <span className="text-xl">{patent.title}</span>
             </div>
-            <div className="mb-2 text-2xl font-semibold">
-              Field of Innovation :
-              <span className="text-xl font-normal text-">
-                {" "}
-                {patent.fieldOfInvention}
-              </span>
+            <div className="mb-4">
+              <span className="mr-3 text-lg font-semibold">Field of Innovation:</span>
+              <span className="text-xl">{patent.fieldOfInvention}</span>
             </div>
-            <div className="flex space-x-4">
+            <div className="flex justify-center space-x-4">
               {approved ? (
-                <button
-                  className="px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600"
-                  disabled
-                >
+                <button onClick={() => approvePatent(id)} className="px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600" disabled>
                   Approved
                 </button>
               ) : (
-                <button
-                  className="px-4 py-2 mr-2 text-white bg-green-500 rounded hover:bg-green-600"
-                  onClick={() => approvePatent(id)}
-                >
+                <button className="px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600" onClick={() => approvePatent(id)}>
                   Approve
                 </button>
               )}
               {!approved && (
-                <button
-                  className="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600"
-                  onClick={() => rejectPatent(id)}
-                >
+                <button onClick={() => rejectPatent(id)} className="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600" onClick={() => rejectPatent(id)}>
                   Reject
                 </button>
               )}
@@ -108,8 +91,11 @@ export default function ViewPatent() {
           </div>
         </div>
       ) : (
-        <p>Loading......</p>
+        <div className="flex items-center justify-center min-h-screen">
+          <p className="text-xl">Loading...</p>
+        </div>
       )}
+
     </>
   );
 }

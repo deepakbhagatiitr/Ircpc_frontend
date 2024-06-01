@@ -22,7 +22,7 @@ export default function Query() {
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/api/query/createquery', {
+      const response = await axios.post('https://ircpc-backend.onrender.com/api/query/createquery', {
         name,
         email,
         query,
@@ -37,7 +37,7 @@ export default function Query() {
 
   const handleGetQuery = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/api/query/getallquery', {
+      const response = await axios.post('https://ircpc-backend.onrender.com/api/query/getallquery', {
         email
       });
       console.log('Queries retrieved:', response.data);
@@ -49,7 +49,7 @@ export default function Query() {
 
   const handleUpdateQuery = async (id) => {
     try {
-      const response = await axios.put(`http://localhost:5000/api/query/updatequery/${id}`, {
+      const response = await axios.put(`https://ircpc-backend.onrender.com/api/query/updatequery/${id}`, {
         comment
       });
       console.log('Query updated:', response.data);
