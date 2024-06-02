@@ -48,12 +48,8 @@ export default function Row({ serialNumber, name, title, background, status, sub
     <>
       <tr>
         <td className="py-4 text-center whitespace-no-wrap border-b border-gray-500">
-          <div className="flex items-center">
-            <div>
-              <div className="text-sm leading-5 text-center text-gray-800">
-                {serialNumber}
-              </div>
-            </div>
+          <div className="text-sm leading-5 text-center text-gray-800">
+            {serialNumber}
           </div>
         </td>
         <td className="px-6 py-4 text-center whitespace-no-wrap border-b border-gray-500">
