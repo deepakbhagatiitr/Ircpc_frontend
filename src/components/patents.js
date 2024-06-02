@@ -87,16 +87,15 @@ const AddPatentForm = () => {
     }));
   };
 
-  const handleCommitteeMemberDeptChange = (e, index) => {
-    const { name, value } = e.target;
-    formData.depEmail = e.target.value;
-    const updatedMembers = [...formData.committeeMembers];
-    updatedMembers[index] = { ...updatedMembers[index], [name]: value };
+
+
+  const handleDept = (e) => {
     setFormData((prevData) => ({
       ...prevData,
-      committeeMembers: updatedMembers,
+      depEmail: e.target.value,
     }));
   };
+
 
   const addCommitteeMember = () => {
     setFormData((prevData) => ({
@@ -192,6 +191,21 @@ const AddPatentForm = () => {
               ></textarea>
             </div>
             <div className="mb-4">
+              <label className="block mt-2 mb-2 text-lg">Department:</label>
+              <select
+                name="department"
+                onChange={(e) => handleDept(e)}
+                className="w-full p-2 border rounded-md"
+              >
+                <option value="">Select Department</option>
+                <option value="deepak1@me.iitr.ac.in">Mechanical Department</option>
+                <option value="deepak988088@gmail.com">Chemical Department</option>
+                <option value="bhagatd117@gmail.com">Civil Department</option>
+                {/* <option value="Electrical Department">Electrical Department</option>
+                  <option value="Computer Science Department">Computer Science Department</option> */}
+              </select>
+            </div>
+            <div className="mb-4">
               <label className="block mb-2 text-lg">Inventor Name:</label>
               <input
                 type="text"
@@ -235,13 +249,13 @@ const AddPatentForm = () => {
                 <label className="block mt-2 mb-2 text-lg">Committee Member Department:</label>
                 <select
                   name="department"
-                  onChange={(e) => handleCommitteeMemberDeptChange(e, index)}
+                  onChange={(e) => handleCommitteeMemberChange(e, index)}
                   className="w-full p-2 border rounded-md"
                 >
-                  <option value="">Select Department</option>
-                  <option value="deepak1@me.iitr.ac.in">Mechanical Department</option>
-                  <option value="deepak988088@gmail.com">Chemical Department</option>
-                  <option value="bhagatd117@gmail.com">Civil Department</option>
+                  <option >Select Department</option>
+                  <option >Mechanical Department</option>
+                  <option >Chemical Department</option>
+                  <option >Civil Department</option>
                   {/* <option value="Electrical Department">Electrical Department</option>
                   <option value="Computer Science Department">Computer Science Department</option> */}
                 </select>

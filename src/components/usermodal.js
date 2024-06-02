@@ -1,5 +1,4 @@
 import React from "react";
-import "./usermodal.css";
 
 const Modal = ({
   serialNumber,
@@ -10,46 +9,44 @@ const Modal = ({
   submittedon,
   pdfUrl,
   onClose,
+  comments
 }) => {
-  // const handleViewPdf = () => {
 
-  //     window.open(`https://ircpc-backend.onrender.com/${pdfUrl}`, "_blank");
-
-  // };
-
+  const handleOverlayClick = (e) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
   return (
-    <div className="modal-overlay w-[20%]">
-      <div className="modal">
-        <div className="modal-header">
-          <h2>Patent Details</h2>
-          <button className="close-btn" onClick={onClose}>
+    <div onClick={handleOverlayClick} className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+      <div className="w-full max-w-lg p-6 bg-white rounded-lg shadow-lg">
+        <div className="flex items-center justify-between pb-4 border-b">
+          <h2 className="text-xl font-semibold">Patent Details</h2>
+          <button className="text-gray-600 hover:text-gray-900 focus:outline-none" onClick={onClose}>
             &times;
           </button>
         </div>
-        <div className="modal-body">
-          <p><strong>Serial Number:</strong> {serialNumber}</p>
-          <p><strong>Name:</strong> {name}</p>
-          <p><strong>Title:</strong> {title}</p>
-          <p><strong>Background:</strong> {background}</p>
-          <p><strong>Status:</strong> {status}</p>
-          <p><strong>Submitted on:</strong> {submittedon}</p>
+        <div className="py-4">
+          <p className="mb-2"><strong>Serial Number:</strong> {serialNumber}</p>
+          <p className="mb-2"><strong>Name:</strong> {name}</p>
+          <p className="mb-2"><strong>Title:</strong> {title}</p>
+          <p className="mb-2"><strong>Background:</strong> {background}</p>
+          <p className="mb-2"><strong>Status:</strong> <span className={status === "HOD Approved" ? "text-green-500" : "text-red-500"}>{status}</span></p>
+          <p className="mb-2"><strong>Submitted on:</strong> {submittedon}</p>
+          <p className="mb-2"><strong>Comment:</strong> {comments}</p>
         </div>
-        <div className="modal-footer">
+        <div className="flex justify-between">
           <button
-
-            className="px-5 py-2 mr-2 text-blue-500 transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none"
+            className="px-4 py-2 font-semibold text-white bg-blue-500 rounded hover:bg-blue-600 focus:outline-none"
+            onClick={() => {
+              pdfUrl && window.open(`https://ircpc-backend.onrender.com/${pdfUrl}`, "_blank")
+            }}
           >
-            {pdfUrl && (
-              <div>
-                <a href={`https://ircpc-backend.onrender.com/${pdfUrl}`} target="_blank" rel="noopener noreferrer">
-                  <p>View Pdf</p>
-                </a>
-              </div>
-            )}
+            {pdfUrl ? "View PDF" : "No PDF available"}
           </button>
           <button
+            className="px-4 py-2 font-semibold text-white bg-red-500 rounded 0 hover:bg-red-600 focus:outline-none"
             onClick={onClose}
-            className="px-5 py-2 text-red-500 transition duration-300 border border-red-500 rounded hover:bg-red-700 hover:text-white focus:outline-none"
           >
             Close
           </button>

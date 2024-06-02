@@ -1,112 +1,168 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "./usermodal.css";
 
-const Action = ({
-  serialNumber,
-  name,
-  title,
-  background,
-  status,
-  submittedon,
-  onClose,
-}) => {
+const Action = ({ status, serialNumber, onClose }) => {
+  const [id, setId] = useState(null);
+  const [selectedDateTime, setSelectedDateTime] = useState("");
+  const [comment, setComment] = useState("");
+  console.log(status);
+  useEffect(() => {
+    axios.get("https://ircpc-backend.onrender.com/api/profiles/getpatents").then((res) => {
+      setId(res.data[serialNumber - 1]._id);
+    });
+  }, [serialNumber]);
+
+  const handleDateTimeChange = (e) => {
+    setSelectedDateTime(e.target.value);
+  };
+
+  const handleDateFinalize = () => {
+    if (id && selectedDateTime) {
+      axios
+        .post(`https://ircpc-backend.onrender.com/api/profiles/dateofmeeting/${id}`, {
+          dateOfMeeting: selectedDateTime,
+        })
+        .then((response) => {
+          console.log("Meeting date finalized:", response.data);
+        })
+        .catch((error) => {
+          console.error("Error finalizing meeting date:", error);
+        });
+    }
+  };
+
+  const handleCommentChange = (e) => {
+    setComment(e.target.value);
+  };
+
+  const handleCommentPost = () => {
+    if (id && comment) {
+      axios
+        .post(`https://ircpc-backend.onrender.com/api/profiles/updatecomment/${id}`, {
+          comment: comment,
+        })
+        .then((response) => {
+          console.log("Comment updated:", response.data);
+          alert("Comment posted");
+        })
+        .catch((error) => {
+          console.error("Error updating comment:", error);
+        });
+    }
+  };
+
+  const handleOverlayClick = (e) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
   return (
-    <div className="modal-overlay w-[20%] ">
-      <div className="modal">
-        <div className="modal-header">
-          <h2>Status</h2>
-          <button className="close-btn" onClick={onClose}>
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 modal-overlay"
+      onClick={handleOverlayClick}
+    >
+      <div className="modal bg-white rounded-lg shadow-lg p-6 w-full max-w-4xl h-auto max-h-[80vh] overflow-y-auto mx-4">
+        <div className="flex items-center justify-between pb-4 border-b modal-header">
+          <h2 className="text-2xl font-semibold text-gray-800">Status</h2>
+          <button
+            className="p-1 text-gray-600 rounded-full close-btn hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-400"
+            onClick={onClose}
+          >
             &times;
           </button>
         </div>
-<div className="mt-6 mb-6">
-{/* <!-- Stepper --> */}
-<ul class="relative flex flex-col md:flex-row gap-2">
-  {/* <!-- Item --> */}
-  <li class="md:shrink md:basis-0 flex-1 group flex gap-x-2 md:block">
-    <div class="min-w-7 min-h-7 flex flex-col items-center md:w-full md:inline-flex md:flex-wrap md:flex-row text-xs align-middle">
-      <span class="size-7 flex justify-center items-center flex-shrink-0 bg-gray-100 font-medium text-gray-800 rounded-full dark:bg-gray-700 dark:text-white">
-        1
-      </span>
-      <div class="mt-2 w-px h-full md:mt-0 md:ms-2 md:w-full md:h-px md:flex-1 bg-gray-200 group-last:hidden dark:bg-gray-700"></div>
-    </div>
-    <div class="grow md:grow-0 md:mt-3 pb-5">
-      <span class="block text-sm font-medium text-gray-800 dark:text-black">
-        Step
-      </span>
-      <p class="text-sm text-gray-500">
-        HOD APPROVAL 
-      </p>
-    </div>
-  </li>
-  {/* <!-- End Item -->
 
-  <!-- Item --> */}
-  <li class="md:shrink md:basis-0 flex-1 group flex gap-x-2 md:block">
-    <div class="min-w-7 min-h-7 flex flex-col items-center md:w-full md:inline-flex md:flex-wrap md:flex-row text-xs align-middle">
-      <span class="size-7 flex justify-center items-center flex-shrink-0 bg-gray-100 font-medium text-gray-800 rounded-full dark:bg-gray-700 dark:text-white">
-        2
-      </span>
-      <div class="mt-2 w-px h-full md:mt-0 md:ms-2 md:w-full md:h-px md:flex-1 bg-gray-200 group-last:hidden dark:bg-gray-700"></div>
-    </div>
-    <div class="grow md:grow-0 md:mt-3 pb-5">
-      <span class="block text-sm font-medium text-gray-800 dark:text-black">
-        Step
-      </span>
-      <p class="text-sm text-gray-500">
-        ADI APPROVAL
-      </p>
-    </div>
-  </li>
-  {/* <!-- End Item --> */}
+        <div className="mt-6 mb-6">
+          {/* Stepper */}
+          <ul className="relative flex flex-col gap-2 md:flex-row">
+            {["HOD APPROVAL", "ADI APPROVAL", "COMMITTEE MEMBERS HAVE JOINED"].map(
+              (step, index) => (
+                <li key={index} className="flex flex-1 md:shrink md:basis-0 group gap-x-2 md:block">
+                  <div className="flex flex-col items-center text-xs align-middle min-w-7 min-h-7 md:w-full md:inline-flex md:flex-wrap md:flex-row">
+                    <span className={`flex items-center justify-center flex-shrink-0 font-medium text-gray-800 rounded-full size-7  ${status === "HOD Approved" && index === 0 ? 'bg-green-500' : 'bg-red-500'}`}>
+                      {index + 1}
+                    </span>
+                    <div className="w-px h-full mt-2 bg-gray-200 md:mt-0 md:ms-2 md:w-full md:h-px md:flex-1 group-last:hidden dark:bg-gray-700"></div>
+                  </div>
+                  <div className="pb-5 grow md:grow-0 md:mt-3">
+                    <span className="block text-sm font-medium text-gray-800 dark:text-black">
+                      Step
+                    </span>
+                    <p className="text-sm text-gray-500">{step}</p>
+                  </div>
+                </li>
+              )
+            )}
+          </ul>
+          {/* End Stepper */}
+        </div>
 
-  {/* <!-- Item --> */}
-  <li class="md:shrink md:basis-0 flex-1 group flex gap-x-2 md:block">
-    <div class="min-w-7 min-h-7 flex flex-col items-center md:w-full md:inline-flex md:flex-wrap md:flex-row text-xs align-middle">
-      <span class="size-7 flex justify-center items-center flex-shrink-0 bg-gray-100 font-medium text-gray-800 rounded-full dark:bg-gray-700 dark:text-white">
-        3
-      </span>
-      <div class="mt-2 w-px h-full md:mt-0 md:ms-2 md:w-full md:h-px md:flex-1 bg-gray-200 group-last:hidden dark:bg-gray-700"></div>
+        <div className="pt-4 border-t">
+          <h3 className="text-lg font-medium text-gray-800">Committee Members</h3>
+          <ul className="flex flex-col max-w-xs mt-2 mb-4">
+            {["person a", "person b", "person c"].map((person, index) => (
+              <li
+                key={index}
+                className="inline-flex items-center px-4 py-3 mt-2 text-sm font-medium text-gray-800 bg-white border border-gray-200 rounded-lg gap-x-2 dark:bg-slate-900 dark:border-gray-700 dark:text-white"
+              >
+                {person}
+              </li>
+            ))}
+          </ul>
+          <button
+            type="button"
+            className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+          >
+            Edit Members
+          </button>
+        </div>
+
+        <div className="pt-4 border-t">
+          <h3 className="text-lg font-medium text-gray-800">Date and Time for IPAC Meeting</h3>
+          <div className="mt-2">
+            <input
+              type="datetime-local"
+              id="meetingdatetime"
+              name="meetingdatetime"
+              value={selectedDateTime}
+              onChange={handleDateTimeChange}
+              className="block w-full px-3 py-2 border border-gray-300 rounded-lg sm:text-sm"
+            />
+            <button
+              type="button"
+              className="mt-3 text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+              onClick={handleDateFinalize}
+            >
+              Finalize Date
+            </button>
+          </div>
+        </div>
+
+        <div className="pt-4 border-t">
+          <h3 className="text-lg font-medium text-gray-800">Final Comment</h3>
+          <div className="mt-2">
+            <input
+              type="text"
+              id="comment"
+              className="block w-full p-2.5 text-sm bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Final Comment"
+              value={comment}
+              onChange={handleCommentChange}
+              required
+            />
+            <button
+              type="button"
+              className="mt-3 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+              onClick={handleCommentPost}
+            >
+              Post
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="grow md:grow-0 md:mt-3 pb-5">
-      <span class="block text-sm font-medium text-gray-800 dark:text-black">
-        Step
-      </span>
-      <p class="text-sm text-gray-500">
-        COMMITTEE MEMBERS HAVE JOINED
-      </p>
-    </div>
-  </li>
-  {/* <!-- End Item --> */}
-</ul>
-{/* <!-- End Stepper --> */}
-</div>
-Committee members
-<hr />
-<ul class="max-w-xs flex flex-col">
-  <li class="inline-flex items-center gap-x-2 py-3 px-4 text-sm font-medium bg-white border border-gray-200 text-gray-800 -mt-px first:rounded-t-lg first:mt-0 last:rounded-b-lg dark:bg-slate-900 dark:border-gray-700 dark:text-white">
-    person a
-  </li>
-  <li class="inline-flex items-center gap-x-2 py-3 px-4 text-sm font-medium bg-white border border-gray-200 text-gray-800 -mt-px first:rounded-t-lg first:mt-0 last:rounded-b-lg dark:bg-slate-900 dark:border-gray-700 dark:text-white">
-    Settings
-  </li>
-  <li class="inline-flex items-center gap-x-2 py-3 px-4 text-sm font-medium bg-white border border-gray-200 text-gray-800 -mt-px first:rounded-t-lg first:mt-0 last:rounded-b-lg dark:bg-slate-900 dark:border-gray-700 dark:text-white">
-    Newsletter
-  </li>
-</ul>
-<button type="button" class="mt-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Edit Members </button>
-<hr />
-Date for IPAC meeting
-<hr /> 
-  <input type="datetime-local" id="birthdaytime" name="birthdaytime"/>
-  <button type="button" class="mt-3 ml-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Finalized Date </button>
-  <hr />
-  Final Comment
-  <hr />
-  <input type="text" id="comment" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Final Comment" required />
-  <button type="button" class=" mt-3 focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Post</button>
-</div>
-</div>
   );
 };
 

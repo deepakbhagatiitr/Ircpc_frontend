@@ -72,28 +72,28 @@ export default function Table() {
           <table className="w-full">
             <thead>
               <tr>
-                <th className="py-3 leading-4 tracking-wider text-left text-center text-blue-500 border-b-2 border-gray-300 tpx-6 ">
+                <th className="py-3 leading-4 tracking-wider text-center text-blue-500 border-b-2 border-gray-300 tpx-6 ">
                   Serial No
                 </th>
-                <th className="py-3 text-sm leading-4 tracking-wider text-left text-center text-blue-500 border-b-2 border-gray-300 tpx-6 ">
+                <th className="py-3 text-sm leading-4 tracking-wider text-center text-blue-500 border-b-2 border-gray-300 tpx-6 ">
                   Applicant Name
                 </th>
-                <th className="py-3 text-sm leading-4 tracking-wider text-left text-center text-blue-500 border-b-2 border-gray-300 tpx-6 ">
+                <th className="py-3 text-sm leading-4 tracking-wider text-center text-blue-500 border-b-2 border-gray-300 tpx-6 ">
                   Title
                 </th>
-                <th className="py-3 text-sm leading-4 tracking-wider text-left text-center text-blue-500 border-b-2 border-gray-300 tpx-6 ">
+                <th className="py-3 text-sm leading-4 tracking-wider text-center text-blue-500 border-b-2 border-gray-300 tpx-6 ">
                   Background
                 </th>
-                <th className="py-3 text-sm leading-4 tracking-wider text-left text-center text-blue-500 border-b-2 border-gray-300 tpx-6 ">
+                <th className="py-3 text-sm leading-4 tracking-wider text-center text-blue-500 border-b-2 border-gray-300 tpx-6 ">
                   Status
                 </th>
-                <th className="py-3 text-sm leading-4 tracking-wider text-left text-center text-blue-500 border-b-2 border-gray-300 tpx-6 ">
+                <th className="py-3 text-sm leading-4 tracking-wider text-center text-blue-500 border-b-2 border-gray-300 tpx-6 ">
                   Submitted on
                 </th>
-                <th className="py-3 text-sm leading-4 tracking-wider text-left text-center text-blue-500 border-b-2 border-gray-300 tpx-6 ">
+                <th className="py-3 text-sm leading-4 tracking-wider text-center text-blue-500 border-b-2 border-gray-300 tpx-6 ">
                   Action
                 </th>
-                <th className="py-3 text-sm leading-4 tracking-wider text-left text-center text-blue-500 border-b-2 border-gray-300 tpx-6 ">
+                <th className="py-3 text-sm leading-4 tracking-wider text-center text-blue-500 border-b-2 border-gray-300 tpx-6 ">
                   Details
                 </th>
                 <th className="py-3 text-center border-b-2 border-gray-300 tpx-6 "></th>
@@ -106,6 +106,7 @@ export default function Table() {
                   serialNumber={index + 1}
                   name={patent.inventor.name}
                   title={patent.title}
+                  // comments={patent.comments}
                   background={patent.inventor.background}
                   status={
                     patent.status
@@ -169,6 +170,7 @@ export default function Table() {
                 serialNumber={index + 1}
                 name={patent.inventor.name}
                 title={patent.title}
+                // comments={patent.comments}
                 background={patent.inventor.background}
                 status={
                   patent.status.DSRIC
