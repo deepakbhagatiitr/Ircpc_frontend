@@ -36,13 +36,14 @@ const Modal = ({
           <p className="mb-2"><strong>Comment:</strong> {comments}</p>
         </div>
         <div className="flex justify-between">
-          <button
-            className="px-4 py-2 font-semibold text-white bg-blue-500 rounded hover:bg-blue-600 focus:outline-none"
-            onClick={() => {
-              pdfUrl && window.open(`https://ircpc-backend.onrender.com/${pdfUrl}`, "_blank")
-            }}
-          >
-            {pdfUrl ? "View PDF" : "No PDF available"}
+          <button className="px-5 py-2 mr-2 text-blue-500 transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none">
+            {pdfUrl ? (
+              <a href={`https://ircpc-backend.onrender.com/${pdfUrl}`} target="_blank" rel="noopener noreferrer">
+                View Pdf
+              </a>
+            ) : (
+              'No PDF available'
+            )}
           </button>
           <button
             className="px-4 py-2 font-semibold text-white bg-red-500 rounded 0 hover:bg-red-600 focus:outline-none"
