@@ -24,10 +24,11 @@ const Action = ({ status, serialNumber, onClose }) => {
           dateOfMeeting: selectedDateTime,
         })
         .then((response) => {
-          console.log("Meeting date finalized:", response.data);
+          // console.log("Meeting date finalized:", response.data);
+          alert("Meeting date finalized")
         })
         .catch((error) => {
-          console.error("Error finalizing meeting date:", error);
+          // console.error("Error finalizing meeting date:", error);
         });
     }
   };
