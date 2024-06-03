@@ -23,7 +23,7 @@ export default function Row({ serialNumber, name, title, background, status, sub
   const handleViewDetails = async () => {
     setIsModalOpen(true);
     try {
-      const response = await axios.get(`http://localhost:5000/api/profiles/patents/${userdata.contactInformation.instituteWebmailAddress}`);
+      const response = await axios.get(`https://ircpc-backend.onrender.com/api/profiles/patents/${userdata.contactInformation.instituteWebmailAddress}`);
       const patent = response.data[serialNumber - 1];
       setPatent(patent)
       // console.log(patent)

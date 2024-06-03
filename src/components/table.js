@@ -54,7 +54,7 @@ export default function Table() {
       if (userdata && userdata.contactInformation && userdata.contactInformation.instituteWebmailAddress) {
         try {
           const response = await axios.get(
-            `http://localhost:5000/api/profiles/patents/${userdata.contactInformation.instituteWebmailAddress}`
+            `https://ircpc-backend.onrender.com/api/profiles/patents/${userdata.contactInformation.instituteWebmailAddress}`
           );
           setPatents(response.data);
         } catch (error) {

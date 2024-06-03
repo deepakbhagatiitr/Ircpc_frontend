@@ -11,7 +11,7 @@ const Action = ({ status, serialNumber, onClose }) => {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/profiles/getpatents").then((res) => {
+    axios.get("https://ircpc-backend.onrender.com/api/profiles/getpatents").then((res) => {
       const patent = res.data[serialNumber - 1];
       setId(patent._id);
       setUser(patent);
@@ -32,7 +32,7 @@ const Action = ({ status, serialNumber, onClose }) => {
   const handleDateFinalize = () => {
     if (id && selectedDateTime) {
       axios
-        .post(`http://localhost:5000/api/profiles/dateofmeeting/${id}`, {
+        .post(`https://ircpc-backend.onrender.com/api/profiles/dateofmeeting/${id}`, {
           dateOfMeeting: selectedDateTime,
         })
         .then((response) => {
@@ -51,13 +51,13 @@ const Action = ({ status, serialNumber, onClose }) => {
   const handleCommentPost = () => {
     if (id && comment) {
       axios
-        .post(`http://localhost:5000/api/profiles/updatecomment/${id}`, {
+        .post(`https://ircpc-backend.onrender.com/api/profiles/updatecomment/${id}`, {
           comment: comment,
         })
         .then((response) => {
           alert("Comment posted and message sent");
           axios
-            .post(`http://localhost:5000/api/profiles/DSRI/recommendation/${id}`);
+            .post(`https://ircpc-backend.onrender.com/api/profiles/DSRI/recommendation/${id}`);
         })
         .catch((error) => {
           console.error("Error updating comment:", error);

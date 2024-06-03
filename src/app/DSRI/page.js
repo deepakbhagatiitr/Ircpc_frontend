@@ -25,7 +25,7 @@ export default function ViewPatent() {
     const postComment = async (patentId) => {
         try {
             await axios.post(
-                `http://localhost:5000/api/profiles/patents/${patentId}/comment`,
+                `https://ircpc-backend.onrender.com/api/profiles/patents/${patentId}/comment`,
                 { comment } // Send the comment in the request body
             );
             setMessage("Comment has been posted.");
@@ -36,7 +36,7 @@ export default function ViewPatent() {
     const fetchPatentDetails = async (patentId) => {
         try {
             const response = await axios.get(
-                `http://localhost:5000/api/profiles/patent/${patentId}`
+                `https://ircpc-backend.onrender.com/api/profiles/patent/${patentId}`
             );
             setPatent(response.data);
         } catch (error) {
@@ -48,7 +48,7 @@ export default function ViewPatent() {
         try {
             setLoading(true)
             await axios.put(
-                `http://localhost:5000/api/profiles/DSRI/patents/${patentId}/approve`
+                `https://ircpc-backend.onrender.com/api/profiles/DSRI/patents/${patentId}/approve`
             );
             setLoading(false)
             setApproved(true);
@@ -65,7 +65,7 @@ export default function ViewPatent() {
             setLoading(true)
 
             await axios.put(
-                `http://localhost:5000/api/profiles/patents/${patentId}/reject`
+                `https://ircpc-backend.onrender.com/api/profiles/patents/${patentId}/reject`
             );
             setLoading(false)
             setApproved(false);

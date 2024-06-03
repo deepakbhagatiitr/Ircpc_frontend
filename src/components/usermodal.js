@@ -38,7 +38,7 @@ const Modal = ({
         <div className="flex justify-between">
           <button className="px-5 py-2 mr-2 text-blue-500 transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none">
             {pdfUrl ? (
-              <a href={`http://localhost:5000/${pdfUrl}`} target="_blank" rel="noopener noreferrer">
+              <a href={`https://ircpc-backend.onrender.com/${pdfUrl}`} target="_blank" rel="noopener noreferrer">
                 View Pdf
               </a>
             ) : (
