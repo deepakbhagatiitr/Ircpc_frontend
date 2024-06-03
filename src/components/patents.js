@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import Loader from "./Loader";
 
 const AddPatentForm = () => {
   const router = useRouter();
@@ -9,6 +10,7 @@ const AddPatentForm = () => {
 
   const [resumes, setResumes] = useState([
   ]);
+  const [loading, setLoading] = useState(true);
 
   const [showMore, setShowMore] = useState(false);
   const maxVisibleResumes = 2;
@@ -133,10 +135,11 @@ const AddPatentForm = () => {
       committeeMembers: prevData.committeeMembers.filter((_, i) => i !== index),
     }));
   };
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setTimeout(() => {
+      setLoading(false);
+    }, 3000);
     console.log(formData);
     try {
       const response = await axios.post("https://ircpc-backend.onrender.com/api/profiles/addpatents", formData, {
@@ -144,17 +147,20 @@ const AddPatentForm = () => {
           "Content-Type": "multipart/form-data",
         },
       });
-      alert("Patent added successfully");
+      console.log("Patent added successfully");
       router.push("/");
       console.log("Patent added successfully:", response.data);
     } catch (error) {
       console.error("Error adding patent:", error);
+    } finally {
+      // Reset loading after three seconds
+
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="flex items-start w-full gap-6 px-8 py-7 item md:flex-row">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 screen">
+      {loading ? (<div className="flex items-start w-full gap-6 px-8 py-7 item md:flex-row">
         <div className="flex flex-col w-7/12 p-6 bg-white rounded-lg shadow-lg md:w-1/2">
           <h2 className="mb-4 text-2xl font-semibold text-center">Add Patent</h2>
           <form onSubmit={handleSubmit}>
@@ -205,7 +211,7 @@ const AddPatentForm = () => {
                 <option value="shawkunal031@gmail.com">Metallurgy Department</option>
                 <option value="shawkunal032@gmail.com">Biotechnology Department</option>
                 {/* <option value="Electrical Department">Electrical Department</option>
-                  <option value="Computer Science Department">Computer Science Department</option> */}
+              <option value="Computer Science Department">Computer Science Department</option> */}
               </select>
             </div>
             <div className="mb-4">
@@ -260,7 +266,7 @@ const AddPatentForm = () => {
                   <option >Chemical Department</option>
                   <option >Civil Department</option>
                   {/* <option value="Electrical Department">Electrical Department</option>
-                  <option value="Computer Science Department">Computer Science Department</option> */}
+              <option value="Computer Science Department">Computer Science Department</option> */}
                 </select>
                 <button
                   type="button"
@@ -295,7 +301,7 @@ const AddPatentForm = () => {
         <div className="flex flex-col w-5/12 p-6 bg-white rounded-lg shadow-lg md:w-1/2">
           <h2 className="mb-4 text-2xl font-bold text-gray-800">Patent Upload</h2>
           <p className="mb-4 text-base text-gray-600">
-            Be sure to include an updated patent <span className="text-red-500">*</span>
+            Tick the one patent you want to upload <span className="text-red-500">*</span>
           </p>
           <div className="w-full space-y-4 overflow-hidden">
             {resumes.slice(0, showMore ? resumes.length : maxVisibleResumes).map((resume, index) => (
@@ -323,7 +329,7 @@ const AddPatentForm = () => {
                 </div>
                 <div className="flex-1 ml-6">
                   <p className="text-lg font-medium text-gray-700">{resume.name}</p>
-                  <p className="text-sm text-gray-500">Last used on {resume.lastUsed}</p>
+                  {/* <p className="text-sm text-gray-500">Last used on {resume.lastUsed}</p> */}
                 </div>
                 <div className="ml-6">
                   <input
@@ -367,14 +373,40 @@ const AddPatentForm = () => {
             Submitting this application would not change your profile.
           </p>
           <p className="mt-4 text-base text-gray-400">
-            Application powered by unknown |{" "}
+            Application powered by IITR |{" "}
             <a href="#" className="text-blue-500 hover:underline">
               Help Center
             </a>
           </p>
+          <div className="">
+            <h1 className="my-4 text-2xl font-bold text-gray-800">IPO Forms</h1>
+            <div className="flex ">
+              <a href="pdf/form-1.pdf"
+                className="inline-block w-20 p-1 p-2 mr-4 text-base font-semibold text-center text-white bg-blue-500 rounded rounded-lg focus:outline-none">Form
+                1</a>
+              <a href="pdf/form-2.pdf"
+                className="inline-block w-20 p-1 p-2 mr-4 font-bold text-center text-blue-500 bg-white border-2 border-blue-500 rounded rounded-lg text- focus:outline-none">Form
+                2</a>
+              <a href="pdf/form-3.pdf"
+                className="inline-block w-20 p-1 p-2 mr-4 text-base font-semibold text-center text-white bg-blue-500 rounded rounded-lg focus:outline-none">Form
+                3</a>
+              <a href="pdf/form-5.pdf"
+                className="inline-block w-20 p-1 p-2 mr-4 text-base font-semibold text-center text-blue-500 bg-white border-2 border-blue-500 rounded rounded-lg focus:outline-none">Form
+                5</a>
+              <a href="pdf/Form28.pdf"
+                className="inline-block w-20 p-1 p-2 text-base font-semibold text-center text-white bg-blue-500 rounded rounded-lg focus:outline-none">Form
+                28</a>
+            </div>
 
+          </div>
         </div>
-      </div>
+      </div>) : (
+        <Loader />
+      )}
+
+
+
+
     </div>
   );
 };

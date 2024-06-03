@@ -1,17 +1,30 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Loader from "./Loader";
 import "./usermodal.css";
 
 const Action = ({ status, serialNumber, onClose }) => {
   const [id, setId] = useState(null);
   const [selectedDateTime, setSelectedDateTime] = useState("");
   const [comment, setComment] = useState("");
-  console.log(status);
+  const [user, setUser] = useState({});
+  const [committeeMembers, setCommitteeMembers] = useState([]);
+  const [count, setCount] = useState(0);
+
   useEffect(() => {
     axios.get("https://ircpc-backend.onrender.com/api/profiles/getpatents").then((res) => {
-      setId(res.data[serialNumber - 1]._id);
+      const patent = res.data[serialNumber - 1];
+      setId(patent._id);
+      setUser(patent);
+      setCommitteeMembers(patent.committeeMembers || []);
     });
   }, [serialNumber]);
+
+  useEffect(() => {
+    const statusOrder = ["HOD Approved", "ADI Approved", "DSRIC Approved"];
+    const currentCount = statusOrder.indexOf(status) + 1;
+    setCount(currentCount);
+  }, [status]);
 
   const handleDateTimeChange = (e) => {
     setSelectedDateTime(e.target.value);
@@ -24,11 +37,10 @@ const Action = ({ status, serialNumber, onClose }) => {
           dateOfMeeting: selectedDateTime,
         })
         .then((response) => {
-          // console.log("Meeting date finalized:", response.data);
-          alert("Meeting date finalized")
+          alert("Meeting date finalized");
         })
         .catch((error) => {
-          // console.error("Error finalizing meeting date:", error);
+          console.error("Error finalizing meeting date:", error);
         });
     }
   };
@@ -44,8 +56,9 @@ const Action = ({ status, serialNumber, onClose }) => {
           comment: comment,
         })
         .then((response) => {
-          console.log("Comment updated:", response.data);
-          alert("Comment posted");
+          alert("Comment posted and message sent");
+          axios
+            .post(`https://ircpc-backend.onrender.com/api/profiles/DSRI/recommendation/${id}`);
         })
         .catch((error) => {
           console.error("Error updating comment:", error);
@@ -64,11 +77,11 @@ const Action = ({ status, serialNumber, onClose }) => {
       className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 modal-overlay"
       onClick={handleOverlayClick}
     >
-      <div className="modal bg-white rounded-lg shadow-lg p-6 w-full max-w-4xl h-auto max-h-[80vh] overflow-y-auto mx-4">
+      <div className="relative w-4/12  p-6 bg-white rounded-lg shadow-lg h-auto max-h-[80vh] overflow-y-auto mx-4">
         <div className="flex items-center justify-between pb-4 border-b modal-header">
           <h2 className="text-2xl font-semibold text-gray-800">Status</h2>
           <button
-            className="p-1 text-gray-600 rounded-full close-btn hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-400"
+            className="p-1 text-gray-600 close-btn hover:text-gray-900 focus:outline-none"
             onClick={onClose}
           >
             &times;
@@ -78,24 +91,31 @@ const Action = ({ status, serialNumber, onClose }) => {
         <div className="mt-6 mb-6">
           {/* Stepper */}
           <ul className="relative flex flex-col gap-2 md:flex-row">
-            {["HOD APPROVAL", "ADI APPROVAL", "COMMITTEE MEMBERS HAVE JOINED"].map(
-              (step, index) => (
-                <li key={index} className="flex flex-1 md:shrink md:basis-0 group gap-x-2 md:block">
-                  <div className="flex flex-col items-center text-xs align-middle min-w-7 min-h-7 md:w-full md:inline-flex md:flex-wrap md:flex-row">
-                    <span className={`flex items-center justify-center flex-shrink-0 font-medium text-gray-800 rounded-full size-7  ${status === "HOD Approved" && index === 0 ? 'bg-green-500' : 'bg-red-500'}`}>
-                      {index + 1}
-                    </span>
-                    <div className="w-px h-full mt-2 bg-gray-200 md:mt-0 md:ms-2 md:w-full md:h-px md:flex-1 group-last:hidden dark:bg-gray-700"></div>
-                  </div>
-                  <div className="pb-5 grow md:grow-0 md:mt-3">
-                    <span className="block text-sm font-medium text-gray-800 dark:text-black">
-                      Step
-                    </span>
-                    <p className="text-sm text-gray-500">{step}</p>
-                  </div>
-                </li>
-              )
-            )}
+            {[
+              { step: "HOD APPROVAL", status: "HOD Approved" },
+              { step: "ADI FORM THE COMMITTEE", status: "ADI Approved" },
+              { step: "RECOMMENDATION SENT TO DEAN SRIC", status: "DSRIC Approved" }
+            ].map((item, index) => (
+              <li
+                key={index}
+                className="flex flex-1 md:shrink md:basis-0 group gap-x-2 md:block"
+              >
+                <div className="flex flex-col items-center text-xs align-middle min-w-7 min-h-7 md:w-full md:inline-flex md:flex-wrap md:flex-row">
+                  <span
+                    className={`flex items-center justify-center flex-shrink-0 font-medium text-gray-800 rounded-full size-7 ${index < count ? "bg-green-500" : "bg-red-500"}`}
+                  >
+                    {index + 1}
+                  </span>
+                  <div className="w-px h-full mt-2 bg-gray-200 md:mt-0 md:ms-2 md:w-full md:h-px md:flex-1 group-last:hidden dark:bg-gray-700"></div>
+                </div>
+                <div className="pb-5 grow md:grow-0 md:mt-3">
+                  <span className="block text-sm font-medium text-gray-800 dark:text-black">
+                    Step
+                  </span>
+                  <p className="text-sm text-gray-500">{item.step}</p>
+                </div>
+              </li>
+            ))}
           </ul>
           {/* End Stepper */}
         </div>
@@ -103,25 +123,27 @@ const Action = ({ status, serialNumber, onClose }) => {
         <div className="pt-4 border-t">
           <h3 className="text-lg font-medium text-gray-800">Committee Members</h3>
           <ul className="flex flex-col max-w-xs mt-2 mb-4">
-            {["person a", "person b", "person c"].map((person, index) => (
+            {committeeMembers.map((person, index) => (
               <li
                 key={index}
                 className="inline-flex items-center px-4 py-3 mt-2 text-sm font-medium text-gray-800 bg-white border border-gray-200 rounded-lg gap-x-2 dark:bg-slate-900 dark:border-gray-700 dark:text-white"
               >
-                {person}
+                {person.name}
               </li>
             ))}
           </ul>
-          <button
-            type="button"
-            className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-          >
-            Edit Members
-          </button>
         </div>
+        <button
+          type="button"
+          className="px-5 py-2 mb-2 mr-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+        >
+          <a href={`https://ircpc-frontend.vercel.app/ViewPatentDetail?id=${id}`} target="_blank">Edit Members</a>
+        </button>
 
         <div className="pt-4 border-t">
-          <h3 className="text-lg font-medium text-gray-800">Date and Time for IPAC Meeting</h3>
+          <h3 className="text-lg font-medium text-gray-800">
+            Date and Time for IPAC Meeting
+          </h3>
           <div className="mt-2">
             <input
               type="datetime-local"
@@ -133,7 +155,7 @@ const Action = ({ status, serialNumber, onClose }) => {
             />
             <button
               type="button"
-              className="mt-3 text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+              className="px-5 py-2 mt-3 mb-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 me-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
               onClick={handleDateFinalize}
             >
               Finalize Date
@@ -155,7 +177,7 @@ const Action = ({ status, serialNumber, onClose }) => {
             />
             <button
               type="button"
-              className="mt-3 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+              className="px-5 py-2 mt-3 mb-2 text-sm font-medium text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:ring-green-300 me-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
               onClick={handleCommentPost}
             >
               Post

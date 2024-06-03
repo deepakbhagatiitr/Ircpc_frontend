@@ -1,9 +1,8 @@
-// table.js
 "use client";
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
 import axios from "axios";
 import Row from "./table_row";
+import Loader from "./loader";
 
 const Addrow = (index, name, title, background, status, submittedon, view_details) => {
   const tbody = document.getElementById('patentTableBody');
@@ -13,7 +12,7 @@ const Addrow = (index, name, title, background, status, submittedon, view_detail
           <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
               <div className="flex items-center">
                   <div>
-                      <div className="text-sm leading-5 text-gray-800">${id}</div>
+                      <div className="text-sm leading-5 text-gray-800">${index}</div>
                   </div>
               </div>
           </td>
@@ -39,6 +38,7 @@ const Addrow = (index, name, title, background, status, submittedon, view_detail
 export default function Table() {
   const [userdata, setUserdata] = useState(null);
   const [patents, setPatents] = useState([]);
+  const [loading, setLoading] = useState(true); // State for loader
 
   useEffect(() => {
     if (typeof window !== 'undefined' && window.localStorage) {
@@ -64,6 +64,32 @@ export default function Table() {
     };
     fetchPatents();
   }, [userdata]);
+
+
+  useEffect(() => {
+    const showLoaderAndReload = async () => {
+      const loaderShown = localStorage.getItem('loaderShown');
+
+      if (!loaderShown) {
+        localStorage.setItem('loaderShown', 'true');
+        setTimeout(() => {
+          setLoading(false);
+          const isAdmin = userdata?.contactInformation?.instituteWebmailAddress === 'admin@ipr.iitr.ac.in';
+          if (!isAdmin) {
+            window.location.reload(); // Reload the page after 5 seconds
+          }
+        }, 5000); // 5000 milliseconds = 5 seconds
+      } else {
+        setLoading(false);
+      }
+    };
+
+    showLoaderAndReload();
+  }, []);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   if (userdata?.contactInformation?.instituteWebmailAddress === 'admin@ipr.iitr.ac.in') {
     return (
@@ -99,14 +125,13 @@ export default function Table() {
                 <th className="py-3 text-center border-b-2 border-gray-300 tpx-6 "></th>
               </tr>
             </thead>
-            <tbody className="bg-white">
+            <tbody className="bg-white" id="patentTableBody">
               {patents.map((patent, index) => (
                 <Row
                   key={patent._id}
                   serialNumber={index + 1}
                   name={patent.inventor.name}
                   title={patent.title}
-                  // comments={patent.comments}
                   background={patent.inventor.background}
                   status={
                     patent.status
@@ -114,7 +139,7 @@ export default function Table() {
                         patent.status.DSRIC
                           ? "DSRIC Approved"
                           : patent.status.ADI
-                            ? " Approved"
+                            ? "ADI Approved"
                             : patent.status.HOD
                               ? "HOD Approved"
                               : "Pending Approval"
@@ -163,23 +188,27 @@ export default function Table() {
               <th className="px-6 py-3 border-b-2 border-gray-300"></th>
             </tr>
           </thead>
-          <tbody className="bg-white">
+          <tbody className="bg-white" id="patentTableBody">
             {patents.map((patent, index) => (
               <Row
                 key={patent._id}
                 serialNumber={index + 1}
                 name={patent.inventor.name}
                 title={patent.title}
-                // comments={patent.comments}
                 background={patent.inventor.background}
                 status={
-                  patent.status.DSRIC
-                    ? "DSRIC Approved"
-                    : patent.status.ADI
-                      ? "ADI Approved"
-                      : patent.status.HOD
-                        ? "HOD Approved"
-                        : "Pending Approval"
+                  (patent.status.DSRIC || patent.status.COMMEM || patent.status.ADI || patent.status.HOD)
+                    ? (patent.status.DSRIC
+                      ? "DSRIC Approved"
+                      : patent.status.COMMEM
+                        ? "COMMEM Approved"
+                        : patent.status.ADI
+                          ? "ADI Approved"
+                          : patent.status.HOD
+                            ? "HOD Approved"
+                            : "HOD Rejected")
+                    : "Pending Approval"
+
                 }
                 submittedon={new Date(patent.dateOfApplication).toLocaleDateString()}
                 view_details="View details"
