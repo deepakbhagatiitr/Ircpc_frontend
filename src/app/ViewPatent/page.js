@@ -68,6 +68,9 @@ export default function ViewPatent() {
       console.error("Error rejecting patent:", error);
     }
   };
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <>
