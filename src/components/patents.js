@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import Loader from "./Loader";
+import Loader from "./loader";
 
 const AddPatentForm = () => {
   const router = useRouter();
