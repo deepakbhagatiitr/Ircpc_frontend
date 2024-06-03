@@ -137,16 +137,17 @@ const AddPatentForm = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setTimeout(() => {
-      setLoading(false);
-    }, 3000);
+
     console.log(formData);
     try {
+      setLoading(true)
       const response = await axios.post("https://ircpc-backend.onrender.com/api/profiles/addpatents", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
+      setLoading(false)
+
       console.log("Patent added successfully");
       router.push("/");
       console.log("Patent added successfully:", response.data);
@@ -382,19 +383,19 @@ const AddPatentForm = () => {
             <h1 className="my-4 text-2xl font-bold text-gray-800">IPO Forms</h1>
             <div className="flex ">
               <a href="pdf/form-1.pdf"
-                className="inline-block w-20 p-1 p-2 mr-4 text-base font-semibold text-center text-white bg-blue-500 rounded rounded-lg focus:outline-none">Form
+                className="inline-block w-20 p-2 mr-4 text-base font-semibold text-center text-white bg-blue-500 rounded rounded-lg focus:outline-none">Form
                 1</a>
               <a href="pdf/form-2.pdf"
-                className="inline-block w-20 p-1 p-2 mr-4 font-bold text-center text-blue-500 bg-white border-2 border-blue-500 rounded rounded-lg text- focus:outline-none">Form
+                className="inline-block w-20 p-2 mr-4 font-bold text-center text-blue-500 bg-white border-2 border-blue-500 rounded rounded-lg text- focus:outline-none">Form
                 2</a>
               <a href="pdf/form-3.pdf"
-                className="inline-block w-20 p-1 p-2 mr-4 text-base font-semibold text-center text-white bg-blue-500 rounded rounded-lg focus:outline-none">Form
+                className="inline-block w-20 p-2 mr-4 text-base font-semibold text-center text-white bg-blue-500 rounded rounded-lg focus:outline-none">Form
                 3</a>
               <a href="pdf/form-5.pdf"
-                className="inline-block w-20 p-1 p-2 mr-4 text-base font-semibold text-center text-blue-500 bg-white border-2 border-blue-500 rounded rounded-lg focus:outline-none">Form
+                className="inline-block w-20 p-2 mr-4 text-base font-semibold text-center text-blue-500 bg-white border-2 border-blue-500 rounded rounded-lg focus:outline-none">Form
                 5</a>
               <a href="pdf/Form28.pdf"
-                className="inline-block w-20 p-1 p-2 text-base font-semibold text-center text-white bg-blue-500 rounded rounded-lg focus:outline-none">Form
+                className="inline-block w-20 p-2 text-base font-semibold text-center text-white bg-blue-500 rounded rounded-lg focus:outline-none">Form
                 28</a>
             </div>
 
