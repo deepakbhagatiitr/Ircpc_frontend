@@ -24,7 +24,7 @@ export default function ViewPatent() {
   const fetchPatentDetails = async (patentId) => {
     try {
       const response = await axios.get(
-        `https://ircpc-backend.onrender.com/api/profiles/patent/${patentId}`
+        `http://localhost:5000/api/profiles/patent/${patentId}`
       );
       console.log(response.data);
       setPatent(response.data);
@@ -38,7 +38,7 @@ export default function ViewPatent() {
       setLoading(true)
 
       await axios.put(
-        `https://ircpc-backend.onrender.com/api/profiles/patents/${patentId}/approve`
+        `http://localhost:5000/api/profiles/patents/${patentId}/approve`
       );
       setLoading(false)
 
@@ -56,7 +56,7 @@ export default function ViewPatent() {
       setLoading(true)
 
       await axios.put(
-        `https://ircpc-backend.onrender.com/api/profiles/patents/${patentId}/reject`
+        `http://localhost:5000/api/profiles/patents/${patentId}/reject`
       );
 
       setLoading(false)

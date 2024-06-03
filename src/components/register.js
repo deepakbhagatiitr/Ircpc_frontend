@@ -19,7 +19,7 @@ export default function Register() {
         return;
       }
       const response = await axios.post(
-        "https://ircpc-backend.onrender.com/api/auth/createuser",
+        "http://localhost:5000/api/auth/createuser",
         {
           name,
           email,

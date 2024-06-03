@@ -23,7 +23,7 @@ export default function ViewPatentDetail() {
 
     const fetchPatentDetails = async (patentId) => {
         try {
-            const response = await axios.get(`https://ircpc-backend.onrender.com/api/profiles/patent/${patentId}`);
+            const response = await axios.get(`http://localhost:5000/api/profiles/patent/${patentId}`);
             setPatent(response.data);
         } catch (error) {
             console.error("Error fetching patent details:", error);
@@ -32,7 +32,7 @@ export default function ViewPatentDetail() {
 
     const deleteCommitteeMember = async (patentId, committeeMemberId) => {
         try {
-            await axios.delete(`https://ircpc-backend.onrender.com/api/profiles/delete-committee/${patentId}/${committeeMemberId}`);
+            await axios.delete(`http://localhost:5000/api/profiles/delete-committee/${patentId}/${committeeMemberId}`);
             // Update state to reflect the deleted committee member
             setPatent((prevPatent) => ({
                 ...prevPatent,
@@ -47,13 +47,13 @@ export default function ViewPatentDetail() {
         try {
             setLoading(true)
 
-            const response = await axios.post(`https://ircpc-backend.onrender.com/api/profiles/add-committee/${patentId}`, newMember);
+            const response = await axios.post(`http://localhost:5000/api/profiles/add-committee/${patentId}`, newMember);
             // Update state to reflect the added committee member
             if (response) {
                 setLoading(false)
 
                 // alert("members added successfully")
-                axios.post(`https://ircpc-backend.onrender.com/api/profiles/ADI/approve/comemb/${patentId}`).then((res) => {
+                axios.post(`http://localhost:5000/api/profiles/ADI/approve/comemb/${patentId}`).then((res) => {
                     console.log(res);
                 })
             }
@@ -70,7 +70,7 @@ export default function ViewPatentDetail() {
 
     const formCommittee = async (patentId) => {
         try {
-            await axios.put(`https://ircpc-backend.onrender.com/api/profiles/send-emailto-committee/${patentId}`);
+            await axios.put(`http://localhost:5000/api/profiles/send-emailto-committee/${patentId}`);
             setMail(true);
         } catch (error) {
             console.error("Error forming committee:", error);

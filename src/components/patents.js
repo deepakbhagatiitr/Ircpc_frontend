@@ -142,7 +142,7 @@ const AddPatentForm = () => {
     }, 3000);
     console.log(formData);
     try {
-      const response = await axios.post("https://ircpc-backend.onrender.com/api/profiles/addpatents", formData, {
+      const response = await axios.post("http://localhost:5000/api/profiles/addpatents", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
