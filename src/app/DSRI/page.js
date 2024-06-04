@@ -102,6 +102,10 @@ export default function ViewPatent() {
                             <span className="text-xl text-gray-800">{patent.fieldOfInvention}</span>
                         </div>
                         <div className="mb-4">
+                            <span className="mr-3 text-lg font-semibold">ADI Comment:</span>
+                            <span className="text-xl text-black">{patent.comments}</span>
+                        </div>
+                        <div className="mb-4">
                             <textarea
                                 name="comment"
                                 id="comment"

@@ -163,13 +163,13 @@ const Action = ({ status, serialNumber, onClose }) => {
         </div>
 
         <div className="pt-4 border-t">
-          <h3 className="text-lg font-medium text-gray-800">Final Comment</h3>
+          <h3 className="text-lg font-medium text-gray-800">Report of IPAC</h3>
           <div className="mt-2">
             <input
               type="text"
               id="comment"
               className="block w-full p-2.5 text-sm bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Final Comment"
+              placeholder="Report of IPAC"
               value={comment}
               onChange={handleCommentChange}
               required

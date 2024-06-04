@@ -108,7 +108,7 @@ export default function Table() {
                   Title
                 </th>
                 <th className="py-3 text-sm leading-4 tracking-wider text-center text-blue-500 border-b-2 border-gray-300 tpx-6 ">
-                  Background
+                  Inventor Department
                 </th>
                 <th className="py-3 text-sm leading-4 tracking-wider text-center text-blue-500 border-b-2 border-gray-300 tpx-6 ">
                   Status
@@ -132,7 +132,7 @@ export default function Table() {
                   serialNumber={index + 1}
                   name={patent.inventor.name}
                   title={patent.title}
-                  background={patent.inventor.background}
+                  background={patent.inventor.department}
                   status={
                     patent.status
                       ? (
@@ -173,8 +173,8 @@ export default function Table() {
               <th className="px-6 py-3 text-sm leading-4 tracking-wider text-center text-blue-500 border-b-2 border-gray-300">
                 Title
               </th>
-              <th className="px-6 py-3 text-sm leading-4 tracking-wider text-center text-blue-500 border-b-2 border-gray-300">
-                Background
+              <th className="py-3 text-sm leading-4 tracking-wider text-center text-blue-500 border-b-2 border-gray-300 tpx-6 ">
+                Inventor Department
               </th>
               <th className="px-6 py-3 text-sm leading-4 tracking-wider text-center text-blue-500 border-b-2 border-gray-300">
                 Status
@@ -195,7 +195,7 @@ export default function Table() {
                 serialNumber={index + 1}
                 name={patent.inventor.name}
                 title={patent.title}
-                background={patent.inventor.background}
+                background={patent.inventor.department}
                 status={
                   (patent.status.DSRIC || patent.status.COMMEM || patent.status.ADI || patent.status.HOD)
                     ? (patent.status.DSRIC
