@@ -108,7 +108,7 @@ export default function Table() {
                   Title
                 </th>
                 <th className="py-3 text-sm leading-4 tracking-wider text-center text-blue-500 border-b-2 border-gray-300 tpx-6 ">
-                  Inventor Department
+                  Department
                 </th>
                 <th className="py-3 text-sm leading-4 tracking-wider text-center text-blue-500 border-b-2 border-gray-300 tpx-6 ">
                   Status
@@ -174,7 +174,7 @@ export default function Table() {
                 Title
               </th>
               <th className="py-3 text-sm leading-4 tracking-wider text-center text-blue-500 border-b-2 border-gray-300 tpx-6 ">
-                Inventor Department
+                Department
               </th>
               <th className="px-6 py-3 text-sm leading-4 tracking-wider text-center text-blue-500 border-b-2 border-gray-300">
                 Status
