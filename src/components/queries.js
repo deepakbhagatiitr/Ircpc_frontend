@@ -1,23 +1,20 @@
-"use client"
+"use client";
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import 'tailwindcss/tailwind.css';
 
 export default function Query() {
   const [query, setQuery] = useState('');
   const [comment, setComment] = useState('');
   const [queries, setQueries] = useState([]);
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+
+  const userdata = JSON.parse(localStorage.getItem('userdata'));
+  const name = userdata.person.fullName;
+  const email = userdata.contactInformation.instituteWebmailAddress;
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const userdata = JSON.parse(localStorage.getItem('userdata'));
-      if (userdata) {
-        setName(userdata.person.fullName);
-        setEmail(userdata.contactInformation.instituteWebmailAddress);
-      }
-      handleGetQuery();
-    }
+    handleGetQuery();
+    console.log(userdata);
   }, []);
 
   const handleSubmit = async () => {
@@ -59,145 +56,91 @@ export default function Query() {
     }
   };
 
-  if (typeof window !== 'undefined') {
-    const userdata = JSON.parse(localStorage.getItem('userdata'));
-    if (userdata?.contactInformation.instituteWebmailAddress === 'admin@ipr.iitr.ac.in') {
-      return (
-        <>
-          <div className="query-container h-[75%] mx-auto">
-            <div>
-              <input
-                type="text"
-                className="query-input"
-                placeholder="Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-              <input
-                type="email"
-                className="query-input"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <input
-                type="text"
-                className="query-input"
-                placeholder="Query"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-              />
-              <button className="query-button" onClick={handleSubmit}>
-                Create Query
-              </button>
-              {/* ...existing code... */}
-              <div className="query-list ">
-                {queries.map((query) => (
-                  <div key={query._id} className="query-item">
-                    <div className="flebox">
-                      <h3 className="query-name">{query.name}</h3>
-                      <p className="query-date">
-                        {new Date(query.date).toLocaleString("en-US", {
-                          timeZone: "UTC",
-                          hour12: true,
-                          hour: "numeric",
-                          minute: "numeric",
-                        })}
-                      </p>
-                    </div>
-                    <p className="query-email">{query.email}</p>
-                    <br />
-                    <div>
-                      <b>Query:</b>
-                      <em className="query-text">{query.query}</em>
-                    </div>
-                    <div>
-                      <b>Comment:</b>
-                      <em className="comm-text">{query.comment}</em>
-                    </div>
-                    <input
-                      type="text"
-                      placeholder="Add comment"
-                      onChange={(e) => setComment(e.target.value)}
-                    />
-                    <button
-                      className="query-button"
-                      onClick={() => handleUpdateQuery(query._id)}
-                    >
-                      Add Comment
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </>
-      );
-    }
-  }
-
   return (
-    <>
-      <div className="query-container h-[75%] mx-auto">
-        <div>
+    <div className="container p-4 mx-auto">
+      <div className="max-w-4xl p-6 mx-auto bg-white rounded-lg shadow-lg">
+        <h2 className="mb-4 text-2xl font-bold">Submit a Query</h2>
+        <div className="mb-4">
+          <label className="block mb-2 text-gray-700">Name</label>
           <input
             type="text"
-            className="query-input"
-            placeholder="Name"
+            className="w-full p-2 border border-gray-300 rounded-lg"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            readOnly
           />
+        </div>
+        <div className="mb-4">
+          <label className="block mb-2 text-gray-700">Email</label>
           <input
             type="email"
-            className="query-input"
-            placeholder="Email"
+            className="w-full p-2 border border-gray-300 rounded-lg"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            readOnly
           />
-          <input
-            type="text"
-            className="query-input"
-            placeholder="Query"
+        </div>
+        <div className="mb-4">
+          <label className="block mb-2 text-gray-700">Query</label>
+          <textarea
+            className="w-full p-2 border border-gray-300 rounded-lg"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
+            rows="3"
           />
-          <button className="query-button" onClick={handleSubmit}>
-            Create Query
-          </button>
-          {/* ...existing code... */}
-          <div className="query-list ">
-            {queries.map((query) => (
-              <div key={query._id} className="query-item">
-                <div className="flebox">
-                  <h3 className="query-name">{query.name}</h3>
-                  <p className="query-date">
-                    {new Date(query.date).toLocaleString("en-US", {
-                      timeZone: "UTC",
-                      hour12: true,
-                      hour: "numeric",
-                      minute: "numeric",
-                    })}
-                  </p>
-                </div>
-                <p className="query-email">{query.email}</p>
-                <br />
-                <div>
-                  <b>Query:</b>
-                  <em className="query-text">{query.query}</em>
-                </div>
-                <div>
-                  <b>Admin Comment: </b>
-                  {query.comment ? (
-                    <em className="comm-text">{query.comment}</em>
-                  ) : (
-                    <span>No comments till now</span>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
+        <button
+          className="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600"
+          onClick={handleSubmit}
+        >
+          Create Query
+        </button>
       </div>
-    </>
+
+      <div className="max-w-4xl mx-auto mt-8">
+        {queries.map((query) => (
+          <div key={query._id} className="p-6 mb-4 bg-white rounded-lg shadow-lg">
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="text-lg font-semibold">{query.name}</h3>
+              <p className="text-sm text-gray-500">
+                {new Date(query.date).toLocaleString("en-US", {
+                  timeZone: "UTC",
+                  hour12: true,
+                  hour: "numeric",
+                  minute: "numeric",
+                })}
+              </p>
+            </div>
+            <p className="text-sm text-gray-600">{query.email}</p>
+            <div className="mt-2">
+              <b>Query:</b> <em>{query.query}</em>
+            </div>
+            <div className="mt-2">
+              <b>
+                {userdata.contactInformation.instituteWebmailAddress === 'admin@ipr.iitr.ac.in'
+                  ? 'Comment'
+                  : 'Admin Comment'}
+                :
+              </b>
+              <em>{query.comment || 'No comments yet'}</em>
+            </div>
+            {userdata.contactInformation.instituteWebmailAddress === 'admin@ipr.iitr.ac.in' && (
+              <div className="mt-2">
+                <textarea
+                  className="w-full p-2 border border-gray-300 rounded-lg"
+                  placeholder="Add comment"
+                  onChange={(e) => setComment(e.target.value)}
+                  rows="2"
+                />
+                <button
+                  className="px-4 py-2 mt-2 text-white bg-green-500 rounded-lg hover:bg-green-600"
+                  onClick={() => handleUpdateQuery(query._id)}
+                >
+                  Add Comment
+                </button>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
