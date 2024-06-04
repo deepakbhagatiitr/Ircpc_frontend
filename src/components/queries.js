@@ -7,21 +7,23 @@ export default function Query() {
   const [query, setQuery] = useState('');
   const [comment, setComment] = useState('');
   const [queries, setQueries] = useState([]);
-
-  const userdata = JSON.parse(localStorage.getItem('userdata'));
-  const name = userdata.person.fullName;
-  const email = userdata.contactInformation.instituteWebmailAddress;
+  const [userdata, setUserdata] = useState(null);
 
   useEffect(() => {
-    handleGetQuery();
-    console.log(userdata);
+    if (typeof window !== 'undefined') {
+      const data = JSON.parse(localStorage.getItem('userdata'));
+      setUserdata(data);
+      if (data) {
+        handleGetQuery(data.contactInformation.instituteWebmailAddress);
+      }
+    }
   }, []);
 
   const handleSubmit = async () => {
     try {
       const response = await axios.post('https://ircpc-backend.onrender.com/api/query/createquery', {
-        name,
-        email,
+        name: userdata.person.fullName,
+        email: userdata.contactInformation.instituteWebmailAddress,
         query,
         comment
       });
@@ -32,7 +34,7 @@ export default function Query() {
     }
   };
 
-  const handleGetQuery = async () => {
+  const handleGetQuery = async (email) => {
     try {
       const response = await axios.post('https://ircpc-backend.onrender.com/api/query/getallquery', {
         email
@@ -56,6 +58,10 @@ export default function Query() {
     }
   };
 
+  if (!userdata) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="container p-4 mx-auto">
       <div className="max-w-4xl p-6 mx-auto bg-white rounded-lg shadow-lg">
@@ -65,7 +71,7 @@ export default function Query() {
           <input
             type="text"
             className="w-full p-2 border border-gray-300 rounded-lg"
-            value={name}
+            value={userdata.person.fullName}
             readOnly
           />
         </div>
@@ -74,7 +80,7 @@ export default function Query() {
           <input
             type="email"
             className="w-full p-2 border border-gray-300 rounded-lg"
-            value={email}
+            value={userdata.contactInformation.instituteWebmailAddress}
             readOnly
           />
         </div>
