@@ -223,12 +223,12 @@ const AddPatentForm = () => {
                 className="w-full p-2 border rounded-md"
               >
                 <option value="">Select Department</option>
-                <option value="deepak1@me.iitr.ac.in">Mechanical Department</option>
-                <option value="deepak988088@gmail.com">Chemical Department</option>
-                <option value="bhagatd117@gmail.com">Civil Department</option>
-                <option value="k_shaw@ph.iitr.ac.in">Electrical Department</option>
-                <option value="shawkunal031@gmail.com">Metallurgy Department</option>
-                <option value="shawkunal032@gmail.com">Biotechnology Department</option>
+                <option value="zaib.adii@sric.iitr.ac.in">Mechanical Department</option>
+                <option value="zaib.adii@sric.iitr.ac.in">Chemical Department</option>
+                <option value="zaib.adii@sric.iitr.ac.in">Civil Department</option>
+                <option value="zaib.adii@sric.iitr.ac.in">Electrical Department</option>
+                <option value="zaib.adii@sric.iitr.ac.in">Metallurgy Department</option>
+                <option value="zaib.adii@sric.iitr.ac.in">Biotechnology Department</option>
                 {/* <option value="Electrical Department">Electrical Department</option>
               <option value="Computer Science Department">Computer Science Department</option> */}
               </select>
