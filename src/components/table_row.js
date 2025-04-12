@@ -94,6 +94,7 @@ export default function Row({ serialNumber, name, title, background, status, sub
       </tr>
       {isModalOpen && (
         <Modal
+          patent={patent}
           serialNumber={serialNumber}
           name={name}
           title={title}

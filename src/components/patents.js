@@ -19,7 +19,7 @@ const AddPatentForm = () => {
     detailedDescription: "",
     inventor: {
       name: "",
-      background: ""
+      department: ""
     },
     committeeMembers: [],
     email: "",
@@ -61,6 +61,8 @@ const AddPatentForm = () => {
 
   const handleCheckboxChange = (e, resume) => {
     const { checked } = e.target;
+    setSelectedResume(resume);
+
     if (checked) {
       setFormData((prevData) => ({
         ...prevData,

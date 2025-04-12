@@ -9,6 +9,7 @@ const Modal = ({
   submittedon,
   pdfUrl,
   onClose,
+  patent,
   comments
 }) => {
 
@@ -17,6 +18,9 @@ const Modal = ({
       onClose();
     }
   };
+
+  const statusClasses = status === "HOD Approved" || status === "ADI Approved" || status === "DSRIC Approved" ? "text-green-500" : "text-red-500";
+
   return (
     <div onClick={handleOverlayClick} className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div className="w-full max-w-lg p-6 bg-white rounded-lg shadow-lg">
@@ -28,12 +32,30 @@ const Modal = ({
         </div>
         <div className="py-4">
           <p className="mb-2"><strong>Serial Number:</strong> {serialNumber}</p>
+          <p className="mb-2"><strong>Patent Type:</strong> {patent.patentType}</p>
           <p className="mb-2"><strong>Name:</strong> {name}</p>
+          <p className="mb-2"><strong>Email:</strong> {patent.email}</p>
           <p className="mb-2"><strong>Title:</strong> {title}</p>
-          <p className="mb-2"><strong>Background:</strong> {background}</p>
-          <p className="mb-2"><strong>Status:</strong> <span className={status === "HOD Approved" ? "text-green-500" : "text-red-500"}>{status}</span></p>
+          <p className="mb-2"><strong>Inventor Department:</strong> {background}</p>
+          <p className="mb-2"><strong>Field of Invention:</strong> {patent.fieldofInvention}</p>
+          <p className="mb-2"><strong>Detailed Description:</strong> {patent.detailedDescription}</p>
+          <p className="mb-2"><strong>Status:</strong> <span className={statusClasses}>{status}</span></p>
           <p className="mb-2"><strong>Submitted on:</strong> {submittedon}</p>
           <p className="mb-2"><strong>Comment:</strong> {comments}</p>
+          <div className="mb-2">
+            <strong>Committee Members:</strong>
+            {patent.committeeMembers && (patent.committeeMembers).length > 0 ? (
+              <ul className="list-disc list-inside">
+                {patent.committeeMembers.map((member, index) => (
+                  <li key={index}>
+                    {member.name} ({member.email})
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No committee members assigned.</p>
+            )}
+          </div>
         </div>
         <div className="flex justify-between">
           <button className="px-5 py-2 mr-2 text-blue-500 transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none">
