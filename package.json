@@ -22,7 +22,8 @@
     "react-dom": "^18",
     "react-icons": "^5.2.1",
     "react-router-dom": "^6.22.1",
-    "yarn": "^1.22.22"
+    "yarn": "^1.22.22",
+    "your-project-name": "file:"
   },
   "devDependencies": {
     "@types/node": "^20",

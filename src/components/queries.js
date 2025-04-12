@@ -22,7 +22,7 @@ export default function Query() {
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.post('https://ircpc-backend.onrender.com/api/query/createquery', {
+      const response = await axios.post('https://iprc-backend-208970416432.us-central1.run.app/api/query/createquery', {
         name,
         email,
         query,
@@ -37,7 +37,7 @@ export default function Query() {
 
   const handleGetQuery = async () => {
     try {
-      const response = await axios.post('https://ircpc-backend.onrender.com/api/query/getallquery', {
+      const response = await axios.post('https://iprc-backend-208970416432.us-central1.run.app/api/query/getallquery', {
         email
       });
       console.log('Queries retrieved:', response.data);
@@ -49,7 +49,7 @@ export default function Query() {
 
   const handleUpdateQuery = async (id) => {
     try {
-      const response = await axios.put(`https://ircpc-backend.onrender.com/api/query/updatequery/${id}`, {
+      const response = await axios.put(`https://iprc-backend-208970416432.us-central1.run.app/api/query/updatequery/${id}`, {
         comment
       });
       console.log('Query updated:', response.data);

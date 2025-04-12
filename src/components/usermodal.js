@@ -38,9 +38,12 @@ const Modal = ({
         <div className="flex justify-between">
           <button className="px-5 py-2 mr-2 text-blue-500 transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none">
             {pdfUrl ? (
-              <a href={`https://ircpc-backend.onrender.com/${pdfUrl}`} target="_blank" rel="noopener noreferrer">
-                View Pdf
-              </a>
+              // <a href={`https://iprc-backend-208970416432.us-central1.run.app/${pdfUrl}`} target="_blank" rel="noopener noreferrer">
+              //   View Pdf
+              // </a>
+              <div>
+                hello
+              </div>
             ) : (
               'No PDF available'
             )}

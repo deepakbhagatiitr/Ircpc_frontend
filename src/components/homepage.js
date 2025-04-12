@@ -28,7 +28,7 @@ export default function Homepage() {
 
         try {
             // POST request to retrieve access token
-            const response = await axios.post("https://ircpc-backend.onrender.com/api/auth/channeli", {
+            const response = await axios.post("https://iprc-backend-208970416432.us-central1.run.app/api/auth/channeli", {
                 authcode,
             });
 

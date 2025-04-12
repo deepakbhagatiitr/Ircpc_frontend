@@ -11,7 +11,7 @@ const Action = ({ status, serialNumber, onClose }) => {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    axios.get("https://ircpc-backend.onrender.com/api/profiles/getpatents").then((res) => {
+    axios.get("https://iprc-backend-208970416432.us-central1.run.app/api/profiles/getpatents").then((res) => {
       const patent = res.data[serialNumber - 1];
       setId(patent._id);
       setUser(patent);
@@ -32,7 +32,7 @@ const Action = ({ status, serialNumber, onClose }) => {
   const handleDateFinalize = () => {
     if (id && selectedDateTime) {
       axios
-        .post(`https://ircpc-backend.onrender.com/api/profiles/dateofmeeting/${id}`, {
+        .post(`https://iprc-backend-208970416432.us-central1.run.app/api/profiles/dateofmeeting/${id}`, {
           dateOfMeeting: selectedDateTime,
         })
         .then((response) => {
@@ -51,13 +51,13 @@ const Action = ({ status, serialNumber, onClose }) => {
   const handleCommentPost = () => {
     if (id && comment) {
       axios
-        .post(`https://ircpc-backend.onrender.com/api/profiles/updatecomment/${id}`, {
+        .post(`https://iprc-backend-208970416432.us-central1.run.app/api/profiles/updatecomment/${id}`, {
           comment: comment,
         })
         .then((response) => {
           alert("Comment posted and message sent");
           axios
-            .post(`https://ircpc-backend.onrender.com/api/profiles/DSRI/recommendation/${id}`);
+            .post(`https://iprc-backend-208970416432.us-central1.run.app/api/profiles/DSRI/recommendation/${id}`);
         })
         .catch((error) => {
           console.error("Error updating comment:", error);
@@ -136,7 +136,7 @@ const Action = ({ status, serialNumber, onClose }) => {
           type="button"
           className="px-5 py-2 mb-2 mr-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
         >
-          <a href={`https://ircpc-frontend.vercel.app/ViewPatentDetail?id=${id}`} target="_blank">Edit Members</a>
+          <a href={`https://ircpc-frontend.vercel.app//ViewPatentDetail?id=${id}`} target="_blank">Edit Members</a>
         </button>
 
         <div className="pt-4 border-t">

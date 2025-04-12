@@ -13,7 +13,7 @@ export default function Reslogin() {
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post("https://ircpc-backend.onrender.com/api/auth/login", {
+      const response = await axios.post("https://iprc-backend-208970416432.us-central1.run.app/api/auth/login", {
         email,
         password,
       });
@@ -37,7 +37,7 @@ export default function Reslogin() {
         return;
       }
       const response = await axios.post(
-        "https://ircpc-backend.onrender.com/api/auth/createuser",
+        "https://iprc-backend-208970416432.us-central1.run.app/api/auth/createuser",
         {
           name,
           email,
