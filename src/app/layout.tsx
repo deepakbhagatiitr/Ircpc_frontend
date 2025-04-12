@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
@@ -21,27 +20,3 @@ export default function RootLayout({
     </html>
   )
 }
-=======
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import './globals.css'
-
-const inter = Inter({ subsets: ['latin'] })
-
-export const metadata: Metadata = {
-  title: 'Intellectual Property Right Cell Portal',
-  description: 'Intellectual Property Right Cell Portal of IIT Roorkee',
-}
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
-  return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
-    </html>
-  )
-}
->>>>>>> 762541fdb1d3476fd55f50498b6ac60bec9d5c96
